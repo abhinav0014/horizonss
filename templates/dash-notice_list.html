@@ -1,0 +1,44 @@
+{% extends 'dash-base.html' %}
+
+{% block title %}Notices - Dashboard{% endblock %}
+
+{% block content %}
+<div class="bg-white p-6 rounded-lg shadow-sm fade-in">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-xl font-bold">All Notices</h2>
+        <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">
+            <i class="fas fa-plus mr-2"></i>Add Notice
+        </button>
+    </div>
+    
+    <div class="overflow-x-auto">
+        <table class="min-w-full">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Title</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                {% for notice in notices %}
+                <tr>
+                    <td class="px-6 py-4">{{ notice.title }}</td>
+                    <td class="px-6 py-4">{{ notice.get_notice_type_display }}</td>
+                    <td class="px-6 py-4">{{ notice.created_at|date }}</td>
+                    <td class="px-6 py-4">
+                        <button class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
+                        <button class="text-red-500 hover:text-red-700 ml-2"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="px-6 py-4 text-center text-gray-500">No notices found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}School Dashboard{% endblock %}</title>
+    <!-- Add this line before Tailwind to prevent FOUC -->
+    <style>
+        /* Base styles to prevent FOUC */
+        html {
+            visibility: hidden;
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Remove visibility:hidden once page is loaded */
+        html {
+            visibility: visible;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            #sidebar {
+                transform: translateX(-100%);
+                width: 100%;
+                height: 100vh;
+            }
+
+            #sidebar.sidebar-open {
+                transform: translateX(0);
+            }
+
+            .menu-icon.open .fa-bars {
+                display: none;
+            }
+
+            .menu-icon.open .fa-times {
+                display: block;
+            }
+        }
+
+        @media (min-width: 1023px) {
+            #sidebar {
+                transform: none;
+                width: 16rem;
+            }
+
+            .main-content {
+                margin-left: 16rem;
+            }
+        }
+
+        /* Add these styles to control text sizes */
+        .text-lg {
+            font-size: 1.125rem !important;
+            line-height: 1.75rem !important;
+        }
+
+        .text-xl {
+            font-size: 1.25rem !important;
+            line-height: 1.75rem !important;
+        }
+
+        .text-2xl {
+            font-size: 1.5rem !important;
+            line-height: 2rem !important;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <!-- Mobile Menu Button -->
+    <!-- Replace the Mobile Menu Button div -->
+    <div class="lg:hidden fixed top-4 left-4 z-50">
+        <button onclick="toggleSidebar()" class="menu-icon p-3 bg-indigo-700 rounded-lg text-white">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-times hidden"></i>
+        </button>
+    </div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar"
+        class="fixed px-8 lg:px-0 top-0 left-0 h-full bg-indigo-700 text-white transition-transform duration-300 ease-in-out z-40">
+        <div class="p-6 h-full flex flex-col">
+            <h2 class="text-2xl font-bold mb-8">School Dashboard</h2>
+
+            <!-- Navigation -->
+            <nav class="flex-1 space-y-1">
+                <a href="{% url 'dashboard:overview' %}"
+                    class="flex items-center space-x-3 p-4 hover:bg-indigo-600 rounded-lg transition-colors {% if active_tab == 'overview' %}bg-indigo-800{% endif %}">
+                    <i class="fas fa-home w-6 text-xl"></i>
+                    <span class="text-lg">Overview</span>
+                </a>
+                <a href="{% url 'dashboard:notices' %}"
+                    class="flex items-center space-x-3 p-4 hover:bg-indigo-600 rounded-lg transition-colors {% if active_tab == 'notices' %}bg-indigo-800{% endif %}">
+                    <i class="fas fa-bell w-6 text-xl"></i>
+                    <span class="text-lg">Notices</span>
+                </a>
+                <a href="{% url 'dashboard:events' %}"
+                    class="flex items-center space-x-3 p-4 hover:bg-indigo-600 rounded-lg transition-colors {% if active_tab == 'events' %}bg-indigo-800{% endif %}">
+                    <i class="fas fa-calendar w-6 text-xl"></i>
+                    <span class="text-lg">Events</span>
+                </a>
+                <a href="{% url 'dashboard:subscribers' %}"
+                    class="flex items-center space-x-3 p-4 hover:bg-indigo-600 rounded-lg transition-colors {% if active_tab == 'subscribers' %}bg-indigo-800{% endif %}">
+                    <i class="fas fa-users w-6 text-xl"></i>
+                    <span class="text-lg">Newsletter</span>
+                </a>
+            </nav>
+
+            <!-- Logout Button -->
+            <div class="mt-auto">
+                <a href="{% url 'admin:logout' %}"
+                    class="flex items-center justify-center space-x-2 p-4 bg-red-500 hover:bg-red-600 rounded-lg transition-colors">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Mobile Overlay -->
+    <div id="overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black opacity-50 z-30 hidden lg:hidden">
+    </div>
+
+
+    <!-- Add margin-top to the main content for mobile -->
+    <main class="main-content p-6 min-h-screen transition-all duration-300 mt-16 lg:mt-0">
+        {% block content %}{% endblock %}
+    </main>
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            const menuIcon = document.querySelector('.menu-icon');
+            const bars = menuIcon.querySelector('.fa-bars');
+            const times = menuIcon.querySelector('.fa-times');
+
+            sidebar.classList.toggle('sidebar-open');
+            overlay.classList.toggle('hidden');
+            menuIcon.classList.toggle('open');
+            bars.classList.toggle('hidden');
+            times.classList.toggle('hidden');
+        }
+    </script>
+</body>
+
+</html>
