@@ -2,7 +2,7 @@
 
 # Check if parameter is provided
 if [ $# -eq 0 ]; then
-    echo "Usage: ./manage.sh [command]"
+    echo "Usage: ./py [command]"
     echo "Commands:"
     echo "  r  - Run server with logging"
     echo "  mm - Make migrations"
@@ -17,12 +17,30 @@ log_command() {
     "$@" 2>&1 | tee -a server.log
 }
 
+# Function to cleanup on exit
+cleanup() {
+    echo "Stopping server..."
+    if [ -f "server.pid" ]; then
+        kill $(cat server.pid) 2>/dev/null
+        rm server.pid
+    fi
+    exit 0
+}
+
+# Trap Ctrl+C and call cleanup
+trap cleanup INT
+
+# Ensure virtual environment is activated
+if [ -d "venv" ] && [ -z "${VIRTUAL_ENV}" ]; then
+    echo "Activating virtual environment..."
+    source venv/bin/activate
+fi
+
 # Process commands
 case $1 in
     "r")
         echo "Starting development server with logging..." | tee -a server.log
-        log_command python manage.py runserver > server.log 2>&1 &
-        echo "Server started with PID $!" | tee -a server.log               
+        python manage.py runserver 2>&1 | tee -a server.log
         ;;
     "mm")
         echo "Making migrations..." | tee -a server.log
@@ -42,7 +60,7 @@ case $1 in
         ;;
     *)
         echo "Invalid command: $1"
-        echo "Usage: ./manage.sh [command]"
+        echo "Usage: ./py [command]"
         echo "Commands:"
         echo "  r  - Run server with logging"
         echo "  mm - Make migrations"

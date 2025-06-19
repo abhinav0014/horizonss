@@ -1,0 +1,309 @@
+{% load static %} {% load seo_blocks %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Primary Meta Tags -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#4F46E5" />
+
+    <!-- SEO Meta Tags -->
+    <title>
+      {% block meta_title %}New Horizon S.S. - Education for Future Leaders{% endblock %}
+    </title>
+    <meta
+      name="description"
+      content="{% block meta_description %}New Horizon S.S. provides quality education focusing on academic excellence, character development, and innovative learning approaches.{% endblock %}"
+    />
+    <meta
+      name="keywords"
+      content="{% block meta_keywords %}school,top_school, kapilvastu, banganga, education, academic excellence{% endblock %}"
+    />
+    <meta
+      name="author"
+      content="{% block meta_author %}New Horizon S.S.{% endblock %}"
+    />
+    <meta
+      name="robots"
+      content="{% block meta_robots %}index, follow{% endblock %}"
+    />
+
+    <!-- Open Graph / Facebook -->
+    <meta
+      property="og:type"
+      content="{% block og_type %}website{% endblock %}"
+    />
+    <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+    <meta
+      property="og:title"
+      content="{% block og_title %}{{ block.super }}{% endblock %}"
+    />
+    <meta
+      property="og:description"
+      content="{% block og_description %}{{ block.super }}{% endblock %}"
+    />
+    <meta
+      property="og:image"
+      content="{% get_meta_image request og_image|default:'/static/images/default-og.jpg' %}"
+    />
+    <meta property="og:site_name" content="New Horizon S.S." />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@newhorizon" />
+    <meta
+      name="twitter:title"
+      content="{% block twitter_title %}{{ block.super }}{% endblock %}"
+    />
+    <meta
+      name="twitter:description"
+      content="{% block twitter_description %}{{ block.super }}{% endblock %}"
+    />
+    <meta
+      name="twitter:image"
+      content="{% get_meta_image request twitter_image|default:'/static/images/default-twitter.jpg' %}"
+    />
+
+    <!-- Favicon -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="{% static 'favicon/apple-touch-icon.png' %}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="{% static 'favicon/favicon-32x32.png' %}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="{% static 'favicon/favicon-16x16.png' %}"
+    />
+    <link rel="manifest" href="{% static 'site.webmanifest' %}" />
+
+    <!-- Canonical URL -->
+    <link
+      rel="canonical"
+      href="{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}"
+    />
+
+    <!-- Your existing styles -->
+    {% block styles %}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    {% endblock %}
+
+    <!-- Schema.org Markup -->
+    <script type="application/ld+json">
+      {
+          "@context": "https://schema.org",
+          "@type": "{% block schema_type %}Organization{% endblock %}",
+          "name": "New Horizon S.S.",
+          "url": "{{ request.build_absolute_uri }}",
+          "logo": "{% get_meta_image request '/static/favicon/logo.png' %}",
+          {% block schema_extra %}
+          "sameAs": [
+              "https://facebook.com/newhorizon",
+              "https://twitter.com/newhorizon",
+              "https://instagram.com/newhorizon"
+          ]
+          {% endblock %}
+      }
+    </script>
+
+    {% block extra_head %}
+    <style>
+      /* Add/update these styles */
+      :root {
+        --primary-color: #2563eb;
+        --secondary-color: #1e40af;
+      }
+
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+      }
+
+      .mobile-menu {
+        transform: translateX(-100%);
+        transition: all 0.3s ease-in-out;
+      }
+
+      .mobile-menu.open {
+        transform: translateX(0);
+      }
+
+      .nav-link {
+        @apply relative px-4 py-2 text-gray-600 hover:text-primary-600 transition-colors duration-200;
+      }
+
+      .nav-link::after {
+        content: "";
+        @apply absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-200;
+      }
+
+      .nav-link:hover::after {
+        @apply w-full;
+      }
+
+      @media (max-width: 768px) {
+        .nav-link::after {
+          @apply hidden;
+        }
+
+        .mobile-nav-item {
+          @apply block w-full px-4 py-3 border-b border-gray-100 text-gray-700 hover:bg-gray-50 transition-colors;
+        }
+
+        .mobile-nav-item:last-child {
+          @apply border-b-0;
+        }
+
+        .mobile-submenu {
+          @apply pl-8 bg-gray-50 border-l-2 border-blue-500;
+        }
+      }
+    </style>
+    {% endblock %}
+  </head>
+  <body class="bg-gray-50 antialiased">
+    <!-- Main Navigation -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+      <nav class="bg-white border-gray-200">
+        <div
+          class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
+        >
+          <a
+            href="/"
+            class="flex items-center space-x-3 rtl:space-x-reverse"
+          >
+            <img
+              src="{% static 'favicon/logo.png' %}"
+              class="h-8"
+              alt="Logo"
+            />
+            <span
+              class="self-center text-2xl font-semibold whitespace-nowrap"
+              >New Horizon</span
+            >
+          </a>
+          <div
+            class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse"
+          >
+            <button
+              type="button"
+              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center">
+              Enroll Now
+            </button>
+            <button
+              data-collapse-toggle="navbar-cta"
+              type="button"
+              class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+              aria-controls="navbar-cta"
+              aria-expanded="false"
+            >
+              <span class="sr-only">Open main menu</span>
+              <svg
+                class="w-5 h-5"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 17 14"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M1 1h15M1 7h15M1 13h15"
+                />
+              </svg>
+            </button>
+          </div>
+          <div
+            class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
+            id="navbar-cta"
+          >
+            <ul
+              class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white"
+            >
+              <li>
+                <a
+                  href="#"
+                  class="block py-2 px-3 md:p-0 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700"
+                  aria-current="page"
+                  >Home</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="block py-2 px-3 md:p-0 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700"
+                  >About</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="block py-2 px-3 md:p-0 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700"
+                  >Services</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="block py-2 px-3 md:p-0 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700"
+                  >Contact</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <!-- Main Content -->
+    <main class="max-w-7xl m-0 p-0 sm:p-0 lg:p-0 p-0">
+      {% block content %}{% endblock %}
+    </main>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const menuBtn = document.getElementById("menuBtn");
+        const closeMenuBtn = document.getElementById("closeMenuBtn");
+        const mobileMenu = document.getElementById("mobileMenu");
+
+        function toggleMenu() {
+          mobileMenu.classList.toggle("open");
+          document.body.classList.toggle("overflow-hidden");
+        }
+
+        menuBtn.addEventListener("click", toggleMenu);
+        closeMenuBtn.addEventListener("click", toggleMenu);
+
+        // Close menu when clicking outside
+        mobileMenu.addEventListener("click", function (e) {
+          if (e.target === mobileMenu) {
+            toggleMenu();
+          }
+        });
+
+        // Close menu with Escape key
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape" && mobileMenu.classList.contains("open")) {
+            toggleMenu();
+          }
+        });
+      });
+    </script>
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

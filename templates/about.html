@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block meta_title %}About Us - School Name{% endblock %}
+
+{% block meta_description %}Learn about our school's rich history, mission, values, and commitment to educational excellence. Discover how we nurture future leaders through innovative teaching methods.{% endblock %}
+
+{% block meta_keywords %}about school, school history, school mission, education values, teaching methodology{% endblock %}
+
+{% block og_type %}article{% endblock %}
+
+{% block schema_type %}EducationalOrganization{% endblock %}
+
+{% block schema_extra %}
+"description": "Comprehensive educational institution committed to academic excellence",
+"foundingDate": "1990",
+"address": {
+    "@type": "PostalAddress",
+    "streetAddress": "123 Education Street",
+    "addressLocality": "City",
+    "addressRegion": "State",
+    "postalCode": "12345",
+    "addressCountry": "Country"
+}
+{% endblock %}
+
+{% block content %}
+<!-- Your page content here -->
+{% endblock %}

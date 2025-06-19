@@ -11,6 +11,7 @@ class Notice(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
     notice_type = models.CharField(max_length=10, choices=NOTICE_TYPES)
+    image = models.ImageField(upload_to='notices/', blank=True, null=True)  # Add this line
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -49,6 +50,8 @@ class Event(models.Model):
     time = models.TimeField()
     venue = models.CharField(max_length=200)
     is_active = models.BooleanField(default=True)
+    is_completed = models.BooleanField(default=False)
+    completed_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -60,8 +63,13 @@ class Event(models.Model):
 
     @property
     def is_upcoming(self):
-        return timezone.now().date() <= self.date
+        return timezone.now().date() <= self.date and not self.is_completed
 
     @property
     def is_past(self):
-        return timezone.now().date() > self.date
+        return timezone.now().date() > self.date or self.is_completed
+
+    def mark_completed(self):
+        self.is_completed = True
+        self.completed_at = timezone.now()
+        self.save()
