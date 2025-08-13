@@ -1,0 +1,465 @@
+{% extends 'dash-base.html' %}
+{% block title %}Admission Requests - Dashboard{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    {% csrf_token %}
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="bg-white p-6 rounded-lg shadow-sm fade-in">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-500">Total Applications</p>
+                    <h3 class="text-2xl font-bold">{{ stats.total }}</h3>
+                </div>
+                <div class="text-blue-500 bg-blue-100 p-3 rounded-full">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-sm fade-in">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-500">Pending Review</p>
+                    <h3 class="text-2xl font-bold">{{ stats.pending }}</h3>
+                </div>
+                <div class="text-yellow-500 bg-yellow-100 p-3 rounded-full">
+                    <i class="fas fa-clock"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-sm fade-in">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-500">Accepted</p>
+                    <h3 class="text-2xl font-bold">{{ stats.accepted }}</h3>
+                </div>
+                <div class="text-green-500 bg-green-100 p-3 rounded-full">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-sm fade-in">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-500">Rejected</p>
+                    <h3 class="text-2xl font-bold">{{ stats.rejected }}</h3>
+                </div>
+                <div class="text-red-500 bg-red-100 p-3 rounded-full">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters and Search -->
+    <div class="bg-white p-6 rounded-lg shadow-sm">
+        <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+            <div class="flex flex-wrap gap-2">
+                <button onclick="filterAdmissions('all')" 
+                        class="px-4 py-2 rounded-md text-sm font-medium transition-colors
+                               {% if current_filter == 'all' %}bg-indigo-600 text-white{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">
+                    All
+                </button>
+                <button onclick="filterAdmissions('pending')"
+                        class="px-4 py-2 rounded-md text-sm font-medium transition-colors
+                               {% if current_filter == 'pending' %}bg-yellow-600 text-white{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">
+                    Pending
+                </button>
+                <button onclick="filterAdmissions('accepted')"
+                        class="px-4 py-2 rounded-md text-sm font-medium transition-colors
+                               {% if current_filter == 'accepted' %}bg-green-600 text-white{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">
+                    Accepted
+                </button>
+                <button onclick="filterAdmissions('rejected')"
+                        class="px-4 py-2 rounded-md text-sm font-medium transition-colors
+                               {% if current_filter == 'rejected' %}bg-red-600 text-white{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">
+                    Rejected
+                </button>
+            </div>
+            <div class="w-full md:w-auto">
+                <input type="text" id="searchInput" placeholder="Search by name or ID..." 
+                       class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+        </div>
+    </div>
+
+    <!-- Applications Table -->
+    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Application ID</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Student Name</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Grade</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Applied Date</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for admission in admissions %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap">{{ admission.application_id }}</td>
+                        <td class="px-6 py-4">{{ admission.full_name }}</td>
+                        <td class="px-6 py-4">Grade {{ admission.applying_for_grade }}</td>
+                        <td class="px-6 py-4">{{ admission.applied_at|date:"M d, Y" }}</td>
+                        <td class="px-6 py-4">
+                            <span class="px-2 py-1 text-xs font-semibold rounded-full
+                                {% if admission.status == 'PENDING' %}bg-yellow-100 text-yellow-800
+                                {% elif admission.status == 'ACCEPTED' %}bg-green-100 text-green-800
+                                {% elif admission.status == 'REJECTED' %}bg-red-100 text-red-800
+                                {% else %}bg-gray-100 text-gray-800{% endif %}">
+                                {{ admission.get_status_display }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <button onclick="viewDetails('{{ admission.id }}')" 
+                                    class="text-indigo-600 hover:text-indigo-900 mr-3">
+                                View Details
+                            </button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                            No admission applications found
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Application Details -->
+<div id="detailsModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden">
+    <div class="min-h-screen px-4 text-center">
+        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </div>
+        <div class="inline-block align-middle bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4" id="modalContent">
+                <!-- Content will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .modal-enter {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    .modal-enter-active {
+        opacity: 1;
+        transform: scale(1);
+        transition: opacity 300ms, transform 300ms;
+    }
+    .modal-exit {
+        opacity: 1;
+    }
+    .modal-exit-active {
+        opacity: 0;
+        transform: scale(0.95);
+        transition: opacity 300ms, transform 300ms;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    .fade-in {
+        animation: fadeIn 0.3s ease-in-out;
+    }
+</style>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function filterAdmissions(status) {
+    window.location.href = `?status=${status}`;
+}
+
+function viewDetails(admissionId) {
+    const modal = document.getElementById('detailsModal');
+    const modalContent = document.getElementById('modalContent');
+    modal.classList.remove('hidden');
+
+    fetch(`/dashboard/admissions/${admissionId}/`)
+        .then(response => response.json())
+        .then(data => {
+            modalContent.innerHTML = generateModalContent(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            modalContent.innerHTML = '<p class="text-red-500">Error loading details</p>';
+        });
+}
+
+function generateModalContent(data) {
+    return `
+        <div class="space-y-6 max-h-[80vh] overflow-y-auto">
+            <!-- Header with Status and Close Button -->
+            <div class="flex justify-between items-center border-b pb-4">
+                <div class="flex-1">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900">${data.full_name}'s Application</h3>
+                            <p class="text-sm text-gray-500">Application ID: ${data.application_id}</p>
+                        </div>
+                        <button onclick="closeModal()" class="p-2 hover:bg-gray-100 rounded-full transition-colors">
+                            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="mt-2">
+                        <span class="px-3 py-1 text-sm font-semibold rounded-full
+                            ${data.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 
+                            data.status === 'Accepted' ? 'bg-green-100 text-green-800' : 
+                            'bg-red-100 text-red-800'}">
+                            ${data.status}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student Photo -->
+            <div class="flex justify-center">
+                <img src="${data.student_photo || '/static/img/default-avatar.png'}" 
+                     alt="Student Photo" 
+                     class="w-32 h-32 rounded-full object-cover border-4 border-indigo-100">
+            </div>
+
+            <!-- Personal Information -->
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <h4 class="text-sm font-medium text-gray-500">Date of Birth</h4>
+                    <p class="text-gray-900">${data.date_of_birth}</p>
+                </div>
+                <div>
+                    <h4 class="text-sm font-medium text-gray-500">Gender</h4>
+                    <p class="text-gray-900">${data.gender}</p>
+                </div>
+                <div>
+                    <h4 class="text-sm font-medium text-gray-500">Email</h4>
+                    <p class="text-gray-900">${data.email}</p>
+                </div>
+                <div>
+                    <h4 class="text-sm font-medium text-gray-500">Phone</h4>
+                    <p class="text-gray-900">${data.phone}</p>
+                </div>
+            </div>
+
+            <!-- Academic Information -->
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="font-semibold mb-3">Academic Details</h4>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <h4 class="text-sm font-medium text-gray-500">Applying for Grade</h4>
+                        <p class="text-gray-900">${data.applying_for_grade}</p>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-medium text-gray-500">Previous Grade</h4>
+                        <p class="text-gray-900">${data.previous_grade}</p>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-medium text-gray-500">Previous School</h4>
+                        <p class="text-gray-900">${data.previous_school}</p>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-medium text-gray-500">Previous Percentage</h4>
+                        <p class="text-gray-900">${data.previous_percentage}%</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parent Information -->
+            <div class="grid grid-cols-2 gap-6">
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h4 class="font-semibold mb-3">Father's Details</h4>
+                    <div class="space-y-2">
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-500">Name</h4>
+                            <p class="text-gray-900">${data.father_name}</p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-500">Occupation</h4>
+                            <p class="text-gray-900">${data.father_occupation}</p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-500">Phone</h4>
+                            <p class="text-gray-900">${data.father_phone}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-pink-50 p-4 rounded-lg">
+                    <h4 class="font-semibold mb-3">Mother's Details</h4>
+                    <div class="space-y-2">
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-500">Name</h4>
+                            <p class="text-gray-900">${data.mother_name}</p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-500">Occupation</h4>
+                            <p class="text-gray-900">${data.mother_occupation}</p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-500">Phone</h4>
+                            <p class="text-gray-900">${data.mother_phone}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Documents -->
+            <div class="space-y-3">
+                <h4 class="font-semibold">Uploaded Documents</h4>
+                <div class="grid grid-cols-2 gap-4">
+                    ${data.documents.marksheet ? 
+                        `<a href="${data.documents.marksheet}" target="_blank" 
+                            class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100">
+                            <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                            Previous Marksheet
+                        </a>` : ''}
+                    ${data.documents.transfer_certificate ? 
+                        `<a href="${data.documents.transfer_certificate}" target="_blank"
+                            class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100">
+                            <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                            Transfer Certificate
+                        </a>` : ''}
+                </div>
+            </div>
+
+            <!-- Updated Action Buttons -->
+            <div class="flex justify-end space-x-3 border-t pt-4">
+                <button onclick="closeModal()" 
+                        class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50">
+                    Close
+                </button>
+                ${data.status === 'Pending' ? `
+                    <button onclick="handleStatusUpdate(${data.id}, 'REJECTED')"
+                            class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-50"
+                            id="rejectBtn-${data.id}">
+                        Reject
+                    </button>
+                    <button onclick="handleStatusUpdate(${data.id}, 'ACCEPTED')"
+                            class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50"
+                            id="acceptBtn-${data.id}">
+                        Accept
+                    </button>
+                ` : ''}
+            </div>
+        </div>
+    `;
+}
+
+// Replace the existing handleStatusUpdate function
+async function handleStatusUpdate(admissionId, status) {
+    try {
+        // Get CSRF token
+        const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+        if (!csrfToken) {
+            throw new Error('CSRF token not found');
+        }
+
+        // Disable both buttons during processing
+        const acceptBtn = document.getElementById(`acceptBtn-${admissionId}`);
+        const rejectBtn = document.getElementById(`rejectBtn-${admissionId}`);
+        
+        if (acceptBtn) acceptBtn.disabled = true;
+        if (rejectBtn) rejectBtn.disabled = true;
+
+        // Show loading state
+        const button = status === 'ACCEPTED' ? acceptBtn : rejectBtn;
+        const originalText = button.textContent;
+        button.innerHTML = `
+            <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Processing...
+        `;
+
+        const response = await fetch(`/dashboard/admissions/${admissionId}/update-status/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({ status: status })
+        });
+
+        const data = await response.json();
+
+        if (data.status === 'success') {
+            // Show success message with better visibility
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 fade-in';
+            toast.textContent = `Application successfully ${status.toLowerCase()}`;
+            document.body.appendChild(toast);
+
+            // Remove toast and reload after 3 seconds
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+                setTimeout(() => {
+                    toast.remove();
+                    window.location.reload();
+                }, 300);
+            }, 2700);
+        } else {
+            throw new Error(data.message || 'Error updating status');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        
+        // Show error message
+        const errorToast = document.createElement('div');
+        errorToast.className = 'fixed bottom-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 fade-in';
+        errorToast.textContent = `Error: ${error.message}`;
+        document.body.appendChild(errorToast);
+
+        // Remove error toast after 5 seconds
+        setTimeout(() => {
+            errorToast.classList.add('opacity-0');
+            setTimeout(() => errorToast.remove(), 300);
+        }, 4700);
+        
+        // Reset button state
+        const button = status === 'ACCEPTED' ? acceptBtn : rejectBtn;
+        button.innerHTML = originalText;
+        if (acceptBtn) acceptBtn.disabled = false;
+        if (rejectBtn) rejectBtn.disabled = false;
+    }
+}
+
+function closeModal() {
+    const modal = document.getElementById('detailsModal');
+    modal.classList.add('opacity-0');
+    setTimeout(() => {
+        modal.classList.add('hidden');
+        modal.classList.remove('opacity-0');
+    }, 300);
+}
+
+// Add escape key listener for closing modal
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeModal();
+    }
+});
+
+// Close modal when clicking outside
+document.getElementById('detailsModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeModal();
+    }
+});
+</script>
+{% endblock %}

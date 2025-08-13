@@ -1,110 +1,118 @@
 {% load static %} {% load seo_blocks %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Primary Meta Tags -->
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#4F46E5" />
 
-    <!-- SEO Meta Tags -->
-    <title>
-      {% block meta_title %}New Horizon S.S. - Education for Future Leaders{% endblock %}
-    </title>
-    <meta
-      name="description"
-      content="{% block meta_description %}New Horizon S.S. provides quality education focusing on academic excellence, character development, and innovative learning approaches.{% endblock %}"
-    />
-    <meta
-      name="keywords"
-      content="{% block meta_keywords %}school,top_school, kapilvastu, banganga, education, academic excellence{% endblock %}"
-    />
-    <meta
-      name="author"
-      content="{% block meta_author %}New Horizon S.S.{% endblock %}"
-    />
-    <meta
-      name="robots"
-      content="{% block meta_robots %}index, follow{% endblock %}"
-    />
+<head>
+  <!-- Primary Meta Tags -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#4F46E5" />
 
-    <!-- Open Graph / Facebook -->
-    <meta
-      property="og:type"
-      content="{% block og_type %}website{% endblock %}"
-    />
-    <meta property="og:url" content="{{ request.build_absolute_uri }}" />
-    <meta
-      property="og:title"
-      content="{% block og_title %}{{ block.super }}{% endblock %}"
-    />
-    <meta
-      property="og:description"
-      content="{% block og_description %}{{ block.super }}{% endblock %}"
-    />
-    <meta
-      property="og:image"
-      content="{% get_meta_image request og_image|default:'/static/images/default-og.jpg' %}"
-    />
-    <meta property="og:site_name" content="New Horizon S.S." />
+  <!-- SEO Meta Tags -->
+  <title>
+    {% block meta_title %}New Horizon S.S. - Education for Future Leaders{% endblock %}
+  </title>
+  <meta name="description"
+    content="{% block meta_description %}New Horizon S.S. provides quality education focusing on academic excellence, character development, and innovative learning approaches.{% endblock %}" />
+  <meta name="keywords"
+    content="{% block meta_keywords %}school,top_school, kapilvastu, banganga, education, academic excellence{% endblock %}" />
+  <meta name="author" content="{% block meta_author %}New Horizon S.S.{% endblock %}" />
+  <meta name="robots" content="{% block meta_robots %}index, follow{% endblock %}" />
 
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@newhorizon" />
-    <meta
-      name="twitter:title"
-      content="{% block twitter_title %}{{ block.super }}{% endblock %}"
-    />
-    <meta
-      name="twitter:description"
-      content="{% block twitter_description %}{{ block.super }}{% endblock %}"
-    />
-    <meta
-      name="twitter:image"
-      content="{% get_meta_image request twitter_image|default:'/static/images/default-twitter.jpg' %}"
-    />
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="{% block og_type %}website{% endblock %}" />
+  <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+  <meta property="og:title" content="{% block og_title %}{{ block.super }}{% endblock %}" />
+  <meta property="og:description" content="{% block og_description %}{{ block.super }}{% endblock %}" />
+  <meta property="og:image" content="{% get_meta_image request og_image|default:'/static/images/default-og.jpg' %}" />
+  <meta property="og:site_name" content="New Horizon S.S." />
 
-    <!-- Favicon -->
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="{% static 'favicon/apple-touch-icon.png' %}"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="{% static 'favicon/favicon-32x32.png' %}"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="{% static 'favicon/favicon-16x16.png' %}"
-    />
-    <link rel="manifest" href="{% static 'site.webmanifest' %}" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@newhorizon" />
+  <meta name="twitter:title" content="{% block twitter_title %}{{ block.super }}{% endblock %}" />
+  <meta name="twitter:description" content="{% block twitter_description %}{{ block.super }}{% endblock %}" />
+  <meta name="twitter:image"
+    content="{% get_meta_image request twitter_image|default:'/static/images/default-twitter.jpg' %}" />
 
-    <!-- Canonical URL -->
-    <link
-      rel="canonical"
-      href="{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}"
-    />
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}" />
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}" />
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}" />
+  <link rel="manifest" href="{% static 'site.webmanifest' %}" />
 
-    <!-- Your existing styles -->
-    {% block styles %}
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    {% endblock %}
+  <!-- Canonical URL -->
+  <link rel="canonical" href="{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}" />
 
-    <!-- Schema.org Markup -->
-    <script type="application/ld+json">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+    :root {
+      --primary: #4F46E5;
+      --secondary: #818CF8;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      width: 100%; /* Remove 100vw which can cause overflow */
+      position: relative;
+    }
+
+    .hero-gradient {
+      background: linear-gradient(135deg, #4F46E5 0%, #818CF8 100%);
+    }
+
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-20px);
+      }
+
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
+    .nav-link {
+      position: relative;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background-color: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <!-- Your existing styles -->
+  {% block styles %}
+
+  {% endblock %}
+
+  <!-- Schema.org Markup -->
+  <script type="application/ld+json">
       {
           "@context": "https://schema.org",
           "@type": "{% block schema_type %}Organization{% endblock %}",
@@ -121,189 +129,491 @@
       }
     </script>
 
-    {% block extra_head %}
-    <style>
-      /* Add/update these styles */
-      :root {
-        --primary-color: #2563eb;
-        --secondary-color: #1e40af;
+  {% block extra_head %}
+  <style>
+    /* Add/update these styles */
+    :root {
+      --primary-color: #2563eb;
+      --secondary-color: #1e40af;
+    }
+
+    body {
+      font-family: "Plus Jakarta Sans", sans-serif;
+    }
+
+    .mobile-menu {
+      transform: translateX(-100%);
+      transition: all 0.3s ease-in-out;
+    }
+
+    .mobile-menu.open {
+      transform: translateX(0);
+    }
+
+    .nav-link {
+      @apply relative px-4 py-2 text-gray-600 hover:text-primary-600 transition-colors duration-200;
+    }
+
+    .nav-link::after {
+      content: "";
+      @apply absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-200;
+    }
+
+    .nav-link:hover::after {
+      @apply w-full;
+    }
+
+    @media (max-width: 768px) {
+      .nav-link::after {
+        @apply hidden;
       }
 
-      body {
-        font-family: "Plus Jakarta Sans", sans-serif;
+      .mobile-nav-item {
+        @apply block w-full px-4 py-3 border-b border-gray-100 text-gray-700 hover:bg-gray-50 transition-colors;
       }
 
-      .mobile-menu {
-        transform: translateX(-100%);
-        transition: all 0.3s ease-in-out;
+      .mobile-nav-item:last-child {
+        @apply border-b-0;
       }
 
-      .mobile-menu.open {
+      .mobile-submenu {
+        @apply pl-8 bg-gray-50 border-l-2 border-blue-500;
+      }
+    }
+
+    .btn-click {
+      transform: scale(0.97);
+      transition: transform 0.1s;
+    }
+
+    .hover-lift {
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .hover-lift:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-item-animation {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-item-animation::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: #4F46E5;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+    }
+
+    .nav-item-animation:hover::after {
+      transform: translateX(0);
+    }
+
+    .social-icon {
+      @apply w-8 h-8 flex items-center justify-center rounded-full border border-gray-700 hover:border-gray-500;
+      transition: all 0.3s ease;
+    }
+
+    .social-icon:hover {
+      transform: translateY(-2px);
+    }
+
+    footer a {
+      position: relative;
+      display: inline-block;
+    }
+
+    footer a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 1px;
+      bottom: -2px;
+      left: 0;
+      background-color: #fff;
+      transition: width 0.3s ease;
+    }
+
+    footer a:hover::after {
+      width: 100%;
+    }
+
+    @media (max-width: 768px) {
+      footer .grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      }
+
+      /* Responsive text */
+      .responsive-text {
+        font-size: clamp(1rem, 2.5vw, 1.5rem);
+      }
+
+      /* Responsive spacing */
+      .section-padding {
+        padding: clamp(2rem, 5vw, 5rem) 0;
+      }
+
+      /* Mobile menu animation */
+      .mobile-menu-enter {
+        transform: translateX(100%);
+      }
+
+      .mobile-menu-enter-active {
+        transform: translateX(0);
+        transition: transform 300ms ease-in-out;
+      }
+
+      .mobile-menu-exit {
         transform: translateX(0);
       }
 
-      .nav-link {
-        @apply relative px-4 py-2 text-gray-600 hover:text-primary-600 transition-colors duration-200;
+      .mobile-menu-exit-active {
+        transform: translateX(100%);
+        transition: transform 300ms ease-in-out;
       }
+    }
 
-      .nav-link::after {
-        content: "";
-        @apply absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-200;
-      }
+    /* Stairs Menu Animation */
+    @keyframes stairsUp {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(-8px); }
+    }
 
-      .nav-link:hover::after {
-        @apply w-full;
-      }
+    @keyframes stairsDown {
+        0% { transform: translateY(-8px); }
+        100% { transform: translateY(0); }
+    }
 
-      @media (max-width: 768px) {
-        .nav-link::after {
-          @apply hidden;
-        }
+    #menuBtn path {
+        transition: transform 0.3s ease;
+    }
 
-        .mobile-nav-item {
-          @apply block w-full px-4 py-3 border-b border-gray-100 text-gray-700 hover:bg-gray-50 transition-colors;
-        }
+    #menuBtn:hover .stairs-1 {
+        animation: stairsUp 0.3s ease forwards;
+    }
 
-        .mobile-nav-item:last-child {
-          @apply border-b-0;
-        }
+    #menuBtn:hover .stairs-2 {
+        animation: stairsUp 0.3s ease forwards 0.1s;
+    }
 
-        .mobile-submenu {
-          @apply pl-8 bg-gray-50 border-l-2 border-blue-500;
-        }
-      }
-    </style>
-    {% endblock %}
-  </head>
-  <body class="bg-gray-50 antialiased">
-    <!-- Main Navigation -->
-    <header class="bg-white shadow-sm sticky top-0 z-40">
-      <nav class="bg-white border-gray-200">
-        <div
-          class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
-        >
-          <a
-            href="/"
-            class="flex items-center space-x-3 rtl:space-x-reverse"
-          >
-            <img
-              src="{% static 'favicon/logo.png' %}"
-              class="h-8"
-              alt="Logo"
-            />
-            <span
-              class="self-center text-2xl font-semibold whitespace-nowrap"
-              >New Horizon</span
-            >
-          </a>
-          <div
-            class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse"
-          >
-            <button
-              type="button"
-              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center">
-              Enroll Now
+    #menuBtn:hover .stairs-3 {
+        animation: stairsUp 0.3s ease forwards 0.2s;
+    }
+
+    #menuBtn:not(:hover) .stairs-1 {
+        animation: stairsDown 0.3s ease forwards 0.2s;
+    }
+
+    #menuBtn:not(:hover) .stairs-2 {
+        animation: stairsDown 0.3s ease forwards 0.1s;
+    }
+
+    #menuBtn:not(:hover) .stairs-3 {
+        animation: stairsDown 0.3s ease forwards;
+    }
+
+    /* Mobile Menu Transition */
+    .mobile-menu-transition {
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  </style>
+  {% endblock %}
+</head>
+
+<body class="bg-gray-50 antialiased">
+  <!-- Main Navigation -->
+  <header class="bg-white shadow-sm sticky top-0 z-40">
+    <nav class="bg-white/95 backdrop-blur-md fixed w-full z-50 shadow-sm">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex items-center">
+            <a href="/" class="flex items-center space-x-3">
+              <img src="{% static 'favicon/logo.png' %}" class="h-10 w-auto hover:rotate-3 transition-transform"
+                alt="Logo">
+              <span class="text-xl font-bold text-gray-900">New Horizon</span>
+            </a>
+          </div>
+
+          <div class="hidden md:flex items-center space-x-8">
+            {% with request.resolver_match.url_name as url_name %}
+            <a href="{% url 'app:home' %}"
+              class="nav-item-animation px-3 py-2 text-gray-700 hover:text-indigo-600 transition-colors {% if url_name == 'home' %}text-indigo-600{% endif %}">Home</a>
+            <a href="{% url 'app:about' %}"
+              class="nav-item-animation px-3 py-2 text-gray-700 hover:text-indigo-600 transition-colors {% if url_name == 'about' %}text-indigo-600{% endif %}">About</a>
+            <a href="{% url 'app:notices' %}"
+              class="nav-item-animation px-3 py-2 text-gray-700 hover:text-indigo-600 transition-colors {% if url_name == 'notices' %}text-indigo-600{% endif %}">Notices</a>
+            <a href="{% url 'app:events' %}"
+              class="nav-item-animation px-3 py-2 text-gray-700 hover:text-indigo-600 transition-colors {% if url_name == 'events' %}text-indigo-600{% endif %}">Events</a>
+            <a href="{% url 'app:contact' %}"
+              class="nav-item-animation px-3 py-2 text-gray-700 hover:text-indigo-600 transition-colors {% if url_name == 'contact' %}text-indigo-600{% endif %}">Contact</a>
+            {% endwith %}
+
+            <button onclick="this.classList.add('btn-click'); setTimeout(() => this.classList.remove('btn-click'), 100); window.location.replace('/admission/')"
+              class="bg-indigo-600 text-white px-6 py-2 rounded-full hover:bg-indigo-700 transition-all transform hover:scale-105">
+              Apply Now
             </button>
-            <button
-              data-collapse-toggle="navbar-cta"
-              type="button"
-              class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
-              aria-controls="navbar-cta"
-              aria-expanded="false"
-            >
-              <span class="sr-only">Open main menu</span>
-              <svg
-                class="w-5 h-5"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 17 14"
-              >
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M1 1h15M1 7h15M1 13h15"
-                />
+          </div>
+
+          <!-- Mobile menu button -->
+          <div class="flex items-center md:hidden">
+            <button id="menuBtn" class="text-gray-600 hover:text-indigo-600 transition-colors p-2 focus:outline-none">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path class="stairs-1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16"/>
+                <path class="stairs-2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16"/>
+                <path class="stairs-3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 18h16"/>
               </svg>
             </button>
           </div>
-          <div
-            class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
-            id="navbar-cta"
-          >
-            <ul
-              class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white"
-            >
-              <li>
-                <a
-                  href="#"
-                  class="block py-2 px-3 md:p-0 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700"
-                  aria-current="page"
-                  >Home</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block py-2 px-3 md:p-0 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700"
-                  >About</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block py-2 px-3 md:p-0 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700"
-                  >Services</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block py-2 px-3 md:p-0 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700"
-                  >Contact</a
-                >
-              </li>
-            </ul>
-          </div>
         </div>
-      </nav>
-    </header>
-    <!-- Main Content -->
-    <main class="max-w-7xl m-0 p-0 sm:p-0 lg:p-0 p-0">
-      {% block content %}{% endblock %}
-    </main>
+      </div>
+    </nav>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="fixed inset-0 bg-gray-800/50 backdrop-blur-sm z-50 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden">
+      <div class="bg-white h-full w-64 ml-auto p-6">
+        <div class="flex justify-between items-center mb-8">
+          <h2 class="text-xl font-semibold">Menu</h2>
+          <button id="closeMenuBtn" class="text-gray-600 hover:text-indigo-600 focus:outline-none">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+        <div class="flex flex-col space-y-4">
+          {% with request.resolver_match.url_name as url_name %}
+          <a href="{% url 'app:home' %}" class="mobile-nav-item {% if url_name == 'home' %}text-indigo-600{% endif %}">Home</a>
+          <a href="{% url 'app:about' %}" class="mobile-nav-item {% if url_name == 'about' %}text-indigo-600{% endif %}">About</a>
+          <a href="{% url 'app:notices' %}" class="mobile-nav-item {% if url_name == 'notices' %}text-indigo-600{% endif %}">Notices</a>
+          <a href="{% url 'app:events' %}" class="mobile-nav-item {% if url_name == 'events' %}text-indigo-600{% endif %}">Events</a>
+          <a href="{% url 'app:contact' %}" class="mobile-nav-item {% if url_name == 'contact' %}text-indigo-600{% endif %}">Contact</a>
+          {% endwith %}
+          <button class="bg-indigo-600 text-white px-6 py-2 rounded-full hover:bg-indigo-700 transition-colors mt-4">
+            Apply Now
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- Main Content -->
+  <main class="w-full overflow-x-hidden">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Top Footer Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 py-12 border-b border-gray-800">
+            <!-- Brand Section -->
+            <div class="space-y-4">
+                <div class="flex items-center space-x-3">
+                    <img src="{% static 'favicon/logo.png' %}" class="h-10 w-auto" alt="Logo">
+                    <span class="text-xl font-bold text-white">New Horizon</span>
+                </div>
+                <p class="text-gray-400 text-sm">
+                    Shaping tomorrow's leaders through innovative education and holistic development.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="social-icon text-gray-400 hover:text-white transition-colors">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-icon text-gray-400 hover:text-white transition-colors">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-icon text-gray-400 hover:text-white transition-colors">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-icon text-gray-400 hover:text-white transition-colors">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+                <h3 class="text-white font-semibold mb-4">Quick Links</h3>
+                <ul class="space-y-2">
+                    <li>
+                        <a href="{% url 'app:about' %}" class="text-gray-400 hover:text-white transition-colors text-sm">About Us</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'app:notices' %}" class="text-gray-400 hover:text-white transition-colors text-sm">Notices</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'app:events' %}" class="text-gray-400 hover:text-white transition-colors text-sm">Events</a>
+                    </li>
+                    <li>
+                        <a href="/admission/" class="text-gray-400 hover:text-white transition-colors text-sm">Admissions</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div>
+                <h3 class="text-white font-semibold mb-4">Contact Us</h3>
+                <ul class="space-y-2">
+                    <li class="flex items-center space-x-3 text-gray-400 text-sm">
+                        <i class="fas fa-map-marker-alt w-5"></i>
+                        <span>Banganga-2, Kapilvastu</span>
+                    </li>
+                    <li class="flex items-center space-x-3 text-gray-400 text-sm">
+                        <i class="fas fa-phone w-5"></i>
+                        <span>+977-76-550275</span>
+                    </li>
+                    <li class="flex items-center space-x-3 text-gray-400 text-sm">
+                        <i class="fas fa-envelope w-5"></i>
+                        <span>info@newhorizon.edu.np</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Newsletter -->
+            <div>
+                <h3 class="text-white font-semibold mb-4">Newsletter</h3>
+                <p class="text-gray-400 text-sm mb-4">Subscribe to stay updated with school news and events.</p>
+                <form id="newsletterForm" class="flex flex-col sm:flex-row gap-2">
+                    <div class="relative flex-1">
+                        <input type="email" id="newsletterEmail" placeholder="Your email" 
+                               class="w-full bg-gray-800 text-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+                        <span id="newsletterError" class="absolute -bottom-6 left-0 text-red-400 text-xs hidden"></span>
+                    </div>
+                    <button type="submit"
+                            class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors text-sm whitespace-nowrap flex items-center justify-center">
+                        <span id="subscribeButtonText">Subscribe</span>
+                        <svg id="loadingSpinner" class="w-4 h-4 ml-2 hidden animate-spin" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </button>
+                </form>
+                <div id="newsletterSuccess" class="hidden mt-2 text-sm text-green-400"></div>
+            </div>
+        </div>
+
+        <!-- Bottom Footer -->
+        <div class="py-6">
+            <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                <div class="text-gray-400 text-sm">
+                    © {% now "Y" %} New Horizon S.S. All rights reserved.
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Terms of Service</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
         const menuBtn = document.getElementById("menuBtn");
         const closeMenuBtn = document.getElementById("closeMenuBtn");
         const mobileMenu = document.getElementById("mobileMenu");
-
+        
         function toggleMenu() {
-          mobileMenu.classList.toggle("open");
-          document.body.classList.toggle("overflow-hidden");
+            if (mobileMenu.classList.contains('translate-x-full')) {
+                mobileMenu.classList.remove('translate-x-full');
+                document.body.style.overflow = 'hidden';
+            } else {
+                mobileMenu.classList.add('translate-x-full');
+                document.body.style.overflow = '';
+            }
         }
-
+        
         menuBtn.addEventListener("click", toggleMenu);
         closeMenuBtn.addEventListener("click", toggleMenu);
-
+        
         // Close menu when clicking outside
-        mobileMenu.addEventListener("click", function (e) {
-          if (e.target === mobileMenu) {
-            toggleMenu();
-          }
+        mobileMenu.addEventListener("click", function(e) {
+            if (e.target === mobileMenu) {
+                toggleMenu();
+            }
         });
-
+        
         // Close menu with Escape key
-        document.addEventListener("keydown", function (e) {
-          if (e.key === "Escape" && mobileMenu.classList.contains("open")) {
-            toggleMenu();
-          }
+        document.addEventListener("keydown", function(e) {
+            if (e.key === "Escape" && !mobileMenu.classList.contains('translate-x-full')) {
+                toggleMenu();
+            }
         });
-      });
-    </script>
-    {% block extra_js %}{% endblock %}
-  </body>
+    });
+  </script>
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const newsletterForm = document.getElementById('newsletterForm');
+    const emailInput = document.getElementById('newsletterEmail');
+    const errorSpan = document.getElementById('newsletterError');
+    const successDiv = document.getElementById('newsletterSuccess');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const buttonText = document.getElementById('subscribeButtonText');
+
+    newsletterForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Reset states
+        errorSpan.classList.add('hidden');
+        successDiv.classList.add('hidden');
+        loadingSpinner.classList.remove('hidden');
+        buttonText.textContent = 'Subscribing...';
+        
+        const email = emailInput.value.trim();
+        
+        // Basic email validation
+        if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+            showError('Please enter a valid email address');
+            return;
+        }
+
+        try {
+            const response = await fetch("{% url 'app:subscribe_newsletter' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ email: email })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Show success message
+                successDiv.textContent = data.message;
+                successDiv.classList.remove('hidden');
+                emailInput.value = '';
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    successDiv.classList.add('hidden');
+                }, 5000);
+            } else {
+                showError(data.message);
+            }
+        } catch (error) {
+            showError('An error occurred. Please try again.');
+        } finally {
+            loadingSpinner.classList.add('hidden');
+            buttonText.textContent = 'Subscribe';
+        }
+    });
+
+    function showError(message) {
+        errorSpan.textContent = message;
+        errorSpan.classList.remove('hidden');
+        loadingSpinner.classList.add('hidden');
+        buttonText.textContent = 'Subscribe';
+    }
+});
+</script>
+  {% block extra_js %}{% endblock %}
+</body>
+
 </html>

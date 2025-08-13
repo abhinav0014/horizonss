@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Notice, Event, Subscriber
+from .models import Notice, Event, Subscriber, Admission
 
 @admin.register(Notice)
 class NoticeAdmin(admin.ModelAdmin):
@@ -31,3 +31,11 @@ class SubscriberAdmin(admin.ModelAdmin):
     def deactivate_subscribers(self, request, queryset):
         queryset.update(is_active=False)
     deactivate_subscribers.short_description = "Mark selected subscribers as inactive"
+
+@admin.register(Admission)
+class AdmissionAdmin(admin.ModelAdmin):
+    list_display = ('application_id', 'full_name', 'applying_for_grade', 'status', 'applied_at')
+    list_filter = ('status', 'applying_for_grade', 'applied_at')
+    search_fields = ('application_id', 'full_name', 'email', 'phone')
+    readonly_fields = ('application_id', 'applied_at', 'updated_at')
+    date_hierarchy = 'applied_at'

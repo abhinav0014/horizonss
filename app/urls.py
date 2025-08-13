@@ -12,4 +12,8 @@ urlpatterns = [
     
     path('notices/', notices, name='notices'),
     # path('notices/<int:notice_id>/', notice_detail, name='notice_detail'),
+    path('subscribe-newsletter/', subscribe_newsletter, name='subscribe_newsletter'),
+    path('admission/', admission, name='admission'),
+    path('admission/submit/', submit_admission, name='submit_admission'),
+    path('admission/success/', admission_success, name='admission_success'),
 ]

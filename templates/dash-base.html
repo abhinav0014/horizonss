@@ -123,6 +123,11 @@
                     <i class="fas fa-users w-6 text-xl"></i>
                     <span class="text-lg">Newsletter</span>
                 </a>
+                <a href="{% url 'dashboard:admissions' %}"
+                    class="flex items-center space-x-3 p-4 hover:bg-indigo-600 rounded-lg transition-colors {% if active_tab == 'admissions' %}bg-indigo-800{% endif %}">
+                    <i class="fas fa-user-graduate w-6 text-xl"></i>
+                    <span class="text-lg">Admissions</span>
+                </a>
             </nav>
 
             <!-- Logout Button -->

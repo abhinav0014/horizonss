@@ -1,72 +1,49 @@
-#!/bin/bash
+@echo off
+REM filepath: e:\Abhinav\Coder\horizonss\py.bat
 
-# Check if parameter is provided
-if [ $# -eq 0 ]; then
-    echo "Usage: ./py [command]"
-    echo "Commands:"
-    echo "  r  - Run server with logging"
-    echo "  mm - Make migrations"
-    echo "  m  - Migrate"
-    echo "  c  - Create superuser"
-    echo "  s  - Show migrations"
-    exit 1
-fi
+IF "%1"=="" (
+    echo Usage: py [command]
+    echo Commands:
+    echo   r  - Run server with logging
+    echo   mm - Make migrations
+    echo   m  - Migrate
+    echo   c  - Create superuser
+    echo   s  - Show migrations
+    exit /b 1
+)
 
-# Function to log command output
-log_command() {
-    "$@" 2>&1 | tee -a server.log
-}
+REM Ensure virtual environment is activated
+IF EXIST "venv" (
+    IF "%VIRTUAL_ENV%"=="" (
+        echo Activating virtual environment...
+        call venv\Scripts\activate.bat
+    )
+)
 
-# Function to cleanup on exit
-cleanup() {
-    echo "Stopping server..."
-    if [ -f "server.pid" ]; then
-        kill $(cat server.pid) 2>/dev/null
-        rm server.pid
-    fi
-    exit 0
-}
-
-# Trap Ctrl+C and call cleanup
-trap cleanup INT
-
-# Ensure virtual environment is activated
-if [ -d "venv" ] && [ -z "${VIRTUAL_ENV}" ]; then
-    echo "Activating virtual environment..."
-    source venv/bin/activate
-fi
-
-# Process commands
-case $1 in
-    "r")
-        echo "Starting development server with logging..." | tee -a server.log
-        python manage.py runserver 2>&1 | tee -a server.log
-        ;;
-    "mm")
-        echo "Making migrations..." | tee -a server.log
-        log_command python manage.py makemigrations
-        ;;
-    "m")
-        echo "Applying migrations..." | tee -a server.log
-        log_command python manage.py migrate
-        ;;
-    "c")
-        echo "Creating superuser..." | tee -a server.log
-        log_command python manage.py createsuperuser
-        ;;
-    "s")
-        echo "Showing migrations status..." | tee -a server.log
-        log_command python manage.py showmigrations
-        ;;
-    *)
-        echo "Invalid command: $1"
-        echo "Usage: ./py [command]"
-        echo "Commands:"
-        echo "  r  - Run server with logging"
-        echo "  mm - Make migrations"
-        echo "  m  - Migrate"
-        echo "  c  - Create superuser"
-        echo "  s  - Show migrations"
-        exit 1
-        ;;
-esac
+REM Process commands
+IF "%1"=="r" (
+    echo Starting development server with logging... >> server.log
+    python manage.py runserver >> server.log 2>&1
+) ELSE IF "%1"=="mm" (
+    echo Making migrations... >> server.log
+    python manage.py makemigrations >> server.log 2>&1
+) ELSE IF "%1"=="m" (
+    echo Applying migrations... >> server.log
+    python manage.py migrate >> server.log 2>&1
+) ELSE IF "%1"=="c" (
+    echo Creating superuser... >> server.log
+    python manage.py createsuperuser >> server.log 2>&1
+) ELSE IF "%1"=="s" (
+    echo Showing migrations status... >> server.log
+    python manage.py showmigrations >> server.log 2>&1
+) ELSE (
+    echo Invalid command: %1
+    echo Usage: py [command]
+    echo Commands:
+    echo   r  - Run server with logging
+    echo   mm - Make migrations
+    echo   m  - Migrate
+    echo   c  - Create superuser
+    echo   s  - Show migrations
+    exit /b 1
+)

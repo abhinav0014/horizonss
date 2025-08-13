@@ -17,4 +17,7 @@ urlpatterns = [
     path('subscribers/', subscribers, name='subscribers'),
     path('subscribers/export/', export_subscribers, name='export_subscribers'),
     path('subscribers/delete/<int:subscriber_id>/', delete_subscriber, name='delete_subscriber'),
+    path('admissions/', admissions, name='admissions'),
+    path('admissions/<int:admission_id>/', admission_detail, name='admission_detail'),
+    path('admissions/<int:admission_id>/update-status/', update_admission_status, name='update_admission_status'),
 ]

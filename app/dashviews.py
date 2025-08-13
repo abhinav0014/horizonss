@@ -5,7 +5,8 @@ from django.http import HttpResponse, JsonResponse
 import calendar
 from datetime import datetime, timedelta
 import csv
-from .models import Notice, Event, Subscriber
+import json
+from .models import Notice, Event, Subscriber, Admission
 from .forms import EventForm, NoticeForm
 
 def is_admin(user):
@@ -21,6 +22,14 @@ def overview(request):
     ).count()
 
 
+    # Add admission stats
+    admission_stats = {
+        'total': Admission.objects.count(),
+        'pending': Admission.objects.filter(status='PENDING').count(),
+        'accepted': Admission.objects.filter(status='ACCEPTED').count(),
+        'rejected': Admission.objects.filter(status='REJECTED').count(),
+    }
+    
     context = {
         'active_tab': 'overview',
         'notices': Notice.objects.all()[:5],  # Get last 5 notices
@@ -30,7 +39,8 @@ def overview(request):
             'total_notices': total_notices,
             'total_events': total_events,
             'upcoming_events': upcoming_events,
-        }
+        },
+        'admission_stats': admission_stats,
     }
     return render(request, 'dash-overview.html', context)
 
@@ -282,3 +292,80 @@ def toggle_event_completion(request, event_id):
             'completed_at': event.completed_at.strftime('%Y-%m-%d %H:%M') if event.completed_at else None
         })
     return JsonResponse({'status': 'error'}, status=400)
+
+@user_passes_test(is_admin)
+def admissions(request):
+    status_filter = request.GET.get('status', 'all')
+    
+    # Base queryset
+    admissions = Admission.objects.all()
+    
+    # Apply filters
+    if status_filter != 'all':
+        admissions = admissions.filter(status=status_filter.upper())
+    
+    # Get stats
+    stats = {
+        'total': Admission.objects.count(),
+        'pending': Admission.objects.filter(status='PENDING').count(),
+        'accepted': Admission.objects.filter(status='ACCEPTED').count(),
+        'rejected': Admission.objects.filter(status='REJECTED').count(),
+    }
+    
+    context = {
+        'active_tab': 'admissions',
+        'admissions': admissions,
+        'stats': stats,
+        'current_filter': status_filter
+    }
+    return render(request, 'dash-admissions.html', context)
+
+@user_passes_test(is_admin)
+def admission_detail(request, admission_id):
+    admission = get_object_or_404(Admission, id=admission_id)
+    return JsonResponse({
+        'id': admission.id,
+        'application_id': admission.application_id,
+        'full_name': admission.full_name,
+        'date_of_birth': admission.date_of_birth.strftime('%Y-%m-%d'),
+        'gender': admission.get_gender_display(),
+        'email': admission.email,
+        'phone': admission.phone,
+        'address': admission.address,
+        'applying_for_grade': admission.applying_for_grade,
+        'previous_school': admission.previous_school,
+        'previous_grade': admission.previous_grade,
+        'previous_percentage': str(admission.previous_percentage),
+        'father_name': admission.father_name,
+        'father_occupation': admission.father_occupation,
+        'father_phone': admission.father_phone,
+        'mother_name': admission.mother_name,
+        'mother_occupation': admission.mother_occupation,
+        'mother_phone': admission.mother_phone,
+        'status': admission.get_status_display(),
+        'applied_at': admission.applied_at.strftime('%B %d, %Y'),
+        'student_photo': admission.student_photo.url if admission.student_photo else None,
+        'documents': {
+            'marksheet': admission.previous_marksheet.url if admission.previous_marksheet else None,
+            'transfer_certificate': admission.transfer_certificate.url if admission.transfer_certificate else None,
+        }
+    })
+
+@user_passes_test(is_admin)
+def update_admission_status(request, admission_id):
+    if request.method == 'POST':
+        try:
+            admission = get_object_or_404(Admission, id=admission_id)
+            data = json.loads(request.body)
+            status = data.get('status')
+            
+            if status in ['ACCEPTED', 'REJECTED']:
+                admission.status = status
+                admission.save()
+                return JsonResponse({'status': 'success'})
+            
+            return JsonResponse({'status': 'error', 'message': 'Invalid status'}, status=400)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+    
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=405)

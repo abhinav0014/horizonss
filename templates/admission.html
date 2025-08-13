@@ -1,0 +1,623 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 pt-20 pb-12">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Progress Bar -->
+        <div class="mb-8">
+            <div class="flex justify-between mb-2">
+                <span class="text-sm font-medium text-indigo-600" id="progressText">Step 1 of 4</span>
+                <span class="text-sm font-medium text-gray-500" id="progressPercent">25%</span>
+            </div>
+            <div class="h-2 bg-gray-200 rounded-full">
+                <div class="h-2 bg-indigo-600 rounded-full transition-all duration-300" style="width: 25%"
+                    id="progressBar"></div>
+            </div>
+        </div>
+
+        <!-- Form Container -->
+        <div class="bg-white rounded-lg shadow-sm p-8">
+            <form id="admissionForm" class="space-y-6" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <!-- Step 1: Personal Information -->
+                <div class="form-step" data-step="1">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Personal Information</h2>
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Full Name*</label>
+                                <input type="text" name="full_name" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Email*</label>
+                                <input type="email" name="email" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth*</label>
+                                <input type="date" name="date_of_birth" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Gender*</label>
+                                <select name="gender" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                    <option value="">Select Gender</option>
+                                    <option value="M">Male</option>
+                                    <option value="F">Female</option>
+                                    <option value="O">Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Phone*</label>
+                                <input type="tel" name="phone" required pattern="[0-9]{10}"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                    placeholder="10-digit number">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Address*</label>
+                            <textarea name="address" required rows="3"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Academic Information -->
+                <div class="form-step hidden" data-step="2">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Academic Information</h2>
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Applying for Grade*</label>
+                                <select name="applying_for_grade" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                    <option value="">Select Grade</option>
+                                    {% get_grades as grades %}
+                                    {% for i in grades %}
+                                    
+                                    <option value="{{ i }}">
+                                        {% if i == 'NSY' %}
+                                        Nursery
+                                        {% elif i == 'LKG' %}
+                                        Lower KG
+                                        {% elif i == 'UKG' %}
+                                        Upper KG
+                                        {% else %}
+                                        Grade {{ i }}
+                                        {% endif %}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Previous School*</label>
+                                <input type="text" name="previous_school" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Previous Grade*</label>
+                                <select name="previous_grade" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                    <option value="">Select Grade</option>
+                                    {% get_grades as grades %}
+                                    {% for i in grades %}
+                                    
+                                    <option value="{{ i }}">
+                                        {% if i == 'NSY' %}
+                                        Nursery
+                                        {% elif i == 'LKG' %}
+                                        Lower KG
+                                        {% elif i == 'UKG' %}
+                                        Upper KG
+                                        {% else %}
+                                        Grade {{ i }}
+                                        {% endif %}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Previous Percentage*</label>
+                                <input type="number" name="previous_percentage" required step="0.01" min="0" max="100"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                    placeholder="e.g. 85.50">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Parent Information -->
+                <div class="form-step hidden" data-step="3">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Parent/Guardian Information</h2>
+                    <div class="space-y-6">
+                        <!-- Father's Information -->
+                        <div class="space-y-4">
+                            <h3 class="text-lg font-semibold text-gray-700">Father's Details</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Father's Name*</label>
+                                    <input type="text" name="father_name" required
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Occupation*</label>
+                                    <input type="text" name="father_occupation" required
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Phone*</label>
+                                    <input type="tel" name="father_phone" required pattern="[0-9]{10}"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                        placeholder="10-digit number">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mother's Information -->
+                        <div class="space-y-4">
+                            <h3 class="text-lg font-semibold text-gray-700">Mother's Details</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Mother's Name*</label>
+                                    <input type="text" name="mother_name" required
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Occupation*</label>
+                                    <input type="text" name="mother_occupation" required
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Phone*</label>
+                                    <input type="tel" name="mother_phone" required pattern="[0-9]{10}"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                        placeholder="10-digit number">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Document Upload -->
+                <div class="form-step hidden" data-step="4">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">required Documents</h2>
+                    <div class="space-y-6">
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-medium text-gray-700">Student Photo*</label>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div class="flex flex-col space-y-2">
+                                            <div class="flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                                                <div class="space-y-1 text-center">
+                                                    <div class="flex text-sm text-gray-600">
+                                                        <label for="student_photo" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500">
+                                                            <span>Upload a photo</span>
+                                                            <input id="student_photo" name="student_photo" type="file" class="sr-only" required accept="image/*" onchange="handleImageUpload(this, 'studentPhotoPreview', 'studentPhotoProgress')">
+                                                        </label>
+                                                    </div>
+                                                    <p class="text-xs text-gray-500">PNG, JPG up to 2MB</p>
+                                                </div>
+                                            </div>
+                                            <!-- Progress bar -->
+                                            <div id="studentPhotoProgress" class="hidden">
+                                                <div class="flex justify-between mb-1">
+                                                    <span class="text-sm font-medium text-indigo-600" id="studentPhotoProgressText">0%</span>
+                                                    <span class="text-sm font-medium text-gray-500" id="studentPhotoSize">0 KB</span>
+                                                </div>
+                                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                                    <div class="bg-indigo-600 h-2 rounded-full" style="width: 0%" id="studentPhotoProgressBar"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Preview container -->
+                                        <div id="studentPhotoPreview" class="hidden">
+                                            <img src="" alt="Preview" class="w-full h-48 object-cover rounded-md">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-medium text-gray-700">Previous Marksheet*</label>
+                                    <div
+                                        class="flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                                        <div class="space-y-1 text-center">
+                                            <div class="flex text-sm text-gray-600">
+                                                <label for="previous_marksheet"
+                                                    class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                                                    <span>Upload marksheet</span>
+                                                    <input id="previous_marksheet" name="previous_marksheet" type="file"
+                                                        class="sr-only" required accept=".pdf,.jpg,.jpeg,.png">
+                                                </label>
+                                            </div>
+                                            <p class="text-xs text-gray-500">PDF, PNG, JPG up to 2MB</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-medium text-gray-700">Transfer Certificate*</label>
+                                    <div
+                                        class="flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                                        <div class="space-y-1 text-center">
+                                            <div class="flex text-sm text-gray-600">
+                                                <label for="transfer_certificate"
+                                                    class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                                                    <span>Upload certificate</span>
+                                                    <input id="transfer_certificate" name="transfer_certificate"
+                                                        type="file" class="sr-only" required
+                                                        accept=".pdf,.jpg,.jpeg,.png">
+                                                </label>
+                                            </div>
+                                            <p class="text-xs text-gray-500">PDF, PNG, JPG up to 2MB</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="flex justify-between pt-6">
+                    <button type="button" id="prevBtn"
+                        class="hidden px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                        Previous
+                    </button>
+                    <button type="button" id="nextBtn"
+                        class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+                        Next
+                    </button>
+                    <button type="submit" id="submitBtn"
+                        class="hidden px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+                        Submit Application
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('admissionForm');
+        const steps = form.querySelectorAll('.form-step');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const progressPercent = document.getElementById('progressPercent');
+
+        let currentStep = 1;
+
+        function updateProgress() {
+            const progress = (currentStep / steps.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `Step ${currentStep} of ${steps.length}`;
+            progressPercent.textContent = `${progress}%`;
+        }
+
+        function showStep(step) {
+            steps.forEach(s => {
+                s.classList.add('hidden');
+                // Remove required from hidden steps
+                s.querySelectorAll('input, select, textarea').forEach(input => {
+                    input.removeAttribute('required');
+                });
+            });
+
+            const currentStep = form.querySelector(`[data-step="${step}"]`);
+            currentStep.classList.remove('hidden');
+            
+            // Restore required attributes for visible step
+            currentStep.querySelectorAll('input, select, textarea').forEach(input => {
+                if (input.dataset.required === 'true') {
+                    input.setAttribute('required', '');
+                }
+            });
+
+            // Update buttons
+            prevBtn.classList.toggle('hidden', step === 1);
+            nextBtn.classList.toggle('hidden', step === steps.length);
+            submitBtn.classList.toggle('hidden', step !== steps.length);
+
+            updateProgress();
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (validateStep(currentStep)) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            currentStep--;
+            showStep(currentStep);
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (validateStep(currentStep)) {
+                try {
+                    const formData = new FormData(form);
+                    const response = await fetch("{% url 'app:submit_admission' %}", {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const data = await response.json();
+                    if (response.ok) {
+                        alert('Application submitted successfully! Your application ID is: ' + data.application_id);
+                        window.location.href = "{% url 'app:admission_success' %}";
+                    } else {
+                        throw new Error(data.message || 'Something went wrong');
+                    }
+                } catch (error) {
+                    alert(error.message);
+                }
+            }
+        });
+
+        // Store original required state
+        const allInputs = form.querySelectorAll('input, select, textarea');
+        allInputs.forEach(input => {
+            if (input.hasAttribute('required')) {
+                input.dataset.required = 'true';
+            }
+        });
+
+        // Replace the validateStep function with this improved version
+        function validateStep(step) {
+            const currentStepEl = form.querySelector(`[data-step="${step}"]`);
+            const inputs = currentStepEl.querySelectorAll('input, select, textarea');
+            let isValid = true;
+
+            inputs.forEach(input => {
+                // Remove required attribute from hidden steps
+                const allInputs = form.querySelectorAll('input, select, textarea');
+                allInputs.forEach(input => {
+                    const inputStep = input.closest('.form-step');
+                    if (inputStep && inputStep.classList.contains('hidden')) {
+                        input.removeAttribute('required');
+                    } else {
+                        // Restore required attribute if specified in original HTML
+                        if (input.dataset.required === 'true') {
+                            input.setAttribute('required', '');
+                        }
+                    }
+                });
+
+                if (input.required && !input.value) {
+                    isValid = false;
+                    input.classList.add('border-red-500');
+                    // Add error message
+                    let errorMessage = input.dataset.errorMessage || 'This field is required';
+                    let errorDiv = input.nextElementSibling;
+                    if (!errorDiv || !errorDiv.classList.contains('error-message')) {
+                        errorDiv = document.createElement('div');
+                        errorDiv.className = 'error-message text-red-500 text-sm mt-1';
+                        input.parentNode.insertBefore(errorDiv, input.nextSibling);
+                    }
+                    errorDiv.textContent = errorMessage;
+                } else {
+                    input.classList.remove('border-red-500');
+                    // Remove error message if it exists
+                    const errorDiv = input.nextElementSibling;
+                    if (errorDiv && errorDiv.classList.contains('error-message')) {
+                        errorDiv.remove();
+                    }
+
+                    // Additional validation for file inputs
+                    if (input.type === 'file' && input.files[0]) {
+                        const file = input.files[0];
+                        if (file.size > 2 * 1024 * 1024) {
+                            isValid = false;
+                            input.classList.add('border-red-500');
+                            alert(`${input.name} size must be less than 2MB`);
+                        }
+                        
+                        if (input.accept.includes('image/') && !file.type.startsWith('image/')) {
+                            isValid = false;
+                            input.classList.add('border-red-500');
+                            alert(`${input.name} must be an image file`);
+                        }
+                    }
+                }
+            });
+
+            if (!isValid) {
+                // Focus the first invalid input
+                const firstInvalid = currentStepEl.querySelector('input.border-red-500, select.border-red-500, textarea.border-red-500');
+                if (firstInvalid) {
+                    firstInvalid.focus();
+                }
+            }
+
+            return isValid;
+        }
+
+        function handleImageUpload(input, previewId, progressId) {
+            const file = input.files[0];
+            const preview = document.getElementById(previewId);
+            const progressContainer = document.getElementById(progressId);
+            const progressBar = progressContainer.querySelector('[id$="ProgressBar"]');
+            const progressText = progressContainer.querySelector('[id$="ProgressText"]');
+            const sizeText = progressContainer.querySelector('[id$="Size"]');
+
+            // Validate file type and size
+            if (!file.type.startsWith('image/')) {
+                alert('Please upload an image file');
+                input.value = '';
+                return;
+            }
+
+            if (file.size > 2 * 1024 * 1024) {
+                alert('File size must be less than 2MB');
+                input.value = '';
+                return;
+            }
+
+            // Show progress container
+            progressContainer.classList.remove('hidden');
+
+            // Update file size display
+            const fileSize = (file.size / 1024).toFixed(1);
+            sizeText.textContent = `${fileSize} KB`;
+
+            // Create preview
+            const reader = new FileReader();
+            
+            reader.onloadstart = function() {
+                progressBar.style.width = '0%';
+                progressText.textContent = '0%';
+            };
+
+            reader.onprogress = function(e) {
+                if (e.lengthComputable) {
+                    const progress = Math.round((e.loaded / e.total) * 100);
+                    progressBar.style.width = `${progress}%`;
+                    progressText.textContent = `${progress}%`;
+                }
+            };
+
+            reader.onload = function(e) {
+                preview.classList.remove('hidden');
+                preview.querySelector('img').src = e.target.result;
+                progressBar.style.width = '100%';
+                progressText.textContent = '100%';
+            };
+
+            reader.onerror = function() {
+                alert('Error loading file');
+                input.value = '';
+                progressContainer.classList.add('hidden');
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        // Add file validation and preview reset when changing steps
+        function validateStep(step) {
+            const currentStepEl = form.querySelector(`[data-step="${step}"]`);
+            const inputs = currentStepEl.querySelectorAll('input, select, textarea');
+            let isValid = true;
+
+            inputs.forEach(input => {
+                if (input.required && !input.value) {
+                    isValid = false;
+                    input.classList.add('border-red-500');
+                } else {
+                    input.classList.remove('border-red-500');
+                }
+            });
+
+            return isValid;
+        }
+    });
+
+    function handleImageUpload(input, previewId, progressId) {
+        const file = input.files[0];
+        const preview = document.getElementById(previewId);
+        const progressContainer = document.getElementById(progressId);
+        const progressBar = progressContainer.querySelector('[id$="ProgressBar"]');
+        const progressText = progressContainer.querySelector('[id$="ProgressText"]');
+        const sizeText = progressContainer.querySelector('[id$="Size"]');
+
+        // Validate file type and size
+        if (!file.type.startsWith('image/')) {
+            alert('Please upload an image file');
+            input.value = '';
+            return;
+        }
+
+        if (file.size > 2 * 1024 * 1024) {
+            alert('File size must be less than 2MB');
+            input.value = '';
+            return;
+        }
+
+        // Show progress container
+        progressContainer.classList.remove('hidden');
+
+        // Update file size display
+        const fileSize = (file.size / 1024).toFixed(1);
+        sizeText.textContent = `${fileSize} KB`;
+
+        // Create preview
+        const reader = new FileReader();
+        
+        reader.onloadstart = function() {
+            progressBar.style.width = '0%';
+            progressText.textContent = '0%';
+        };
+
+        reader.onprogress = function(e) {
+            if (e.lengthComputable) {
+                const progress = Math.round((e.loaded / e.total) * 100);
+                progressBar.style.width = `${progress}%`;
+                progressText.textContent = `${progress}%`;
+            }
+        };
+
+        reader.onload = function(e) {
+            preview.classList.remove('hidden');
+            preview.querySelector('img').src = e.target.result;
+            progressBar.style.width = '100%';
+            progressText.textContent = '100%';
+        };
+
+        reader.onerror = function() {
+            alert('Error loading file');
+            input.value = '';
+            progressContainer.classList.add('hidden');
+        };
+
+        reader.readAsDataURL(file);
+    }
+
+    // Add file validation and preview reset when changing steps
+    function validateStep(step) {
+        const currentStepEl = form.querySelector(`[data-step="${step}"]`);
+        const inputs = currentStepEl.querySelectorAll('input, select, textarea');
+        let isValid = true;
+
+        inputs.forEach(input => {
+            if (input.required && !input.value) {
+                isValid = false;
+                input.classList.add('border-red-500');
+            } else {
+                input.classList.remove('border-red-500');
+                
+                // Additional validation for file inputs
+                if (input.type === 'file' && input.files[0]) {
+                    const file = input.files[0];
+                    if (file.size > 2 * 1024 * 1024) {
+                        isValid = false;
+                        alert(`${input.name} size must be less than 2MB`);
+                    }
+                    
+                    if (input.accept.includes('image/') && !file.type.startsWith('image/')) {
+                        isValid = false;
+                        alert(`${input.name} must be an image file`);
+                    }
+                }
+            }
+        });
+
+        return isValid;
+    }
+</script>
+{% endblock %}

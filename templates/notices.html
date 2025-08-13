@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta_title %}Notices - New Horizon S.S.{% endblock %}
+{% block meta_description %}Stay updated with the latest notices, announcements, and news from New Horizon School.{% endblock %}
+
+{% block content %}
+<section class="pt-20 pb-12 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-8">School Notices</h1>
+        
+        <!-- Notice Filter -->
+        <div class="mb-6 flex gap-4">
+            <button class="px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700 transition-colors">
+                All Notices
+            </button>
+            <button class="px-4 py-2 rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors">
+                Important
+            </button>
+            <button class="px-4 py-2 rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors">
+                General
+            </button>
+        </div>
+
+        <!-- Notices List -->
+        <div class="space-y-4">
+            {% for notice in notices %}
+            <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h2 class="text-xl font-semibold text-gray-900">{{ notice.title }}</h2>
+                        <p class="text-gray-600 mt-2">{{ notice.content|truncatewords:50 }}</p>
+                    </div>
+                    <span class="text-sm text-gray-500">{{ notice.created_at|date:"M d, Y" }}</span>
+                </div>
+            </div>
+            {% empty %}
+            <div class="text-center py-12 text-gray-500">
+                No notices available at the moment.
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
