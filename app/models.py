@@ -149,3 +149,66 @@ class Admission(models.Model):
 
     class Meta:
         ordering = ['-applied_at']
+
+class Faculty(models.Model):
+    LEVEL_CHOICES = (
+        ('NSY', 'Nursery'),
+        ('LKG', 'Lower KG'),
+        ('UKG', 'Upper KG'),
+        ('PRIMARY', 'Primary (1-5)'),
+        ('MIDDLE', 'Middle (6-8)'),
+        ('SECONDARY', 'Secondary (9-10)'),
+        ('PLUS2_SCIENCE', 'Plus 2 Science'),
+        ('PLUS2_MANAGEMENT', 'Plus 2 Management'),
+        ('PLUS2_EDUCATION', 'Plus 2 Education'),
+        ('BACHELOR', 'Bachelor Level')
+    )
+
+    DEPARTMENT_CHOICES = (
+        ('SCIENCE', 'Science'),
+        ('MATHEMATICS', 'Mathematics'),
+        ('ENGLISH', 'English'),
+        ('NEPALI', 'Nepali'),
+        ('SOCIAL', 'Social Studies'),
+        ('COMPUTER', 'Computer Science'),
+        ('ACCOUNTS', 'Accounts'),
+        ('EDUCATION', 'Education'),
+        ('OTHER', 'Other')
+    )
+
+    # Personal Information
+    full_name = models.CharField(max_length=100)
+    profile_photo = models.ImageField(upload_to='faculty/photos/', null=True, blank=True)
+    email = models.EmailField(unique=True)
+    phone = models.CharField(max_length=15)
+    address = models.TextField()
+    
+    # Professional Information
+    designation = models.CharField(max_length=100)
+    department = models.CharField(max_length=20, choices=DEPARTMENT_CHOICES)
+    teaching_levels = models.JSONField(help_text="List of teaching levels")
+    qualifications = models.TextField()
+    experience_years = models.PositiveIntegerField()
+    
+    # Additional Information
+    bio = models.TextField(blank=True)
+    specialization = models.CharField(max_length=200, blank=True)
+    achievements = models.TextField(blank=True)
+    joining_date = models.DateField()
+    is_active = models.BooleanField(default=True)
+    
+    # Social Links
+    linkedin = models.URLField(blank=True)
+    twitter = models.URLField(blank=True)
+    website = models.URLField(blank=True)
+    
+    # Meta Information
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['department', 'full_name']
+        verbose_name_plural = 'Faculty Members'
+
+    def __str__(self):
+        return f"{self.full_name} - {self.designation}"

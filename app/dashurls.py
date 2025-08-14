@@ -20,4 +20,6 @@ urlpatterns = [
     path('admissions/', admissions, name='admissions'),
     path('admissions/<int:admission_id>/', admission_detail, name='admission_detail'),
     path('admissions/<int:admission_id>/update-status/', update_admission_status, name='update_admission_status'),
+    path('faculty/', faculty_management, name='faculty_management'),
+    path('faculty/<int:faculty_id>/', faculty_action, name='faculty_action'),
 ]

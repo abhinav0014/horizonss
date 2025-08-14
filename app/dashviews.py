@@ -6,7 +6,7 @@ import calendar
 from datetime import datetime, timedelta
 import csv
 import json
-from .models import Notice, Event, Subscriber, Admission
+from .models import Notice, Event, Subscriber, Admission, Faculty
 from .forms import EventForm, NoticeForm
 
 def is_admin(user):
@@ -367,5 +367,64 @@ def update_admission_status(request, admission_id):
             return JsonResponse({'status': 'error', 'message': 'Invalid status'}, status=400)
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+    
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=405)
+
+@user_passes_test(is_admin)
+def faculty_management(request):
+    department_filter = request.GET.get('department', 'all')
+    
+    # Base queryset
+    faculty = Faculty.objects.all()
+    
+    # Apply filters
+    if department_filter != 'all':
+        faculty = faculty.filter(department=department_filter)
+    
+    context = {
+        'active_tab': 'faculty',
+        'faculty': faculty,
+        'departments': Faculty.DEPARTMENT_CHOICES,
+        'current_filter': department_filter
+    }
+    return render(request, 'dash-faculty.html', context)
+
+@user_passes_test(is_admin)
+def faculty_action(request, faculty_id=None):
+    if request.method == 'POST':
+        try:
+            if faculty_id:
+                faculty = Faculty.objects.get(id=faculty_id)
+            else:
+                faculty = Faculty()
+            
+            # Update faculty data
+            faculty.full_name = request.POST.get('full_name')
+            faculty.email = request.POST.get('email')
+            faculty.phone = request.POST.get('phone')
+            faculty.designation = request.POST.get('designation')
+            faculty.department = request.POST.get('department')
+            faculty.teaching_levels = request.POST.getlist('teaching_levels')
+            faculty.qualifications = request.POST.get('qualifications')
+            faculty.experience_years = request.POST.get('experience_years')
+            faculty.bio = request.POST.get('bio')
+            faculty.joining_date = request.POST.get('joining_date')
+            
+            if 'profile_photo' in request.FILES:
+                faculty.profile_photo = request.FILES['profile_photo']
+            
+            faculty.save()
+            
+            return JsonResponse({'status': 'success'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+    
+    elif request.method == 'DELETE' and faculty_id:
+        try:
+            faculty = Faculty.objects.get(id=faculty_id)
+            faculty.delete()
+            return JsonResponse({'status': 'success'})
+        except Faculty.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Faculty member not found'}, status=404)
     
     return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=405)

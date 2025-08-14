@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import user_passes_test
-from .models import Notice, Event, Admission
+from .models import Notice, Event, Admission, Faculty
 from calendar import monthcalendar
 from datetime import datetime
 from django.http import JsonResponse
@@ -245,3 +245,41 @@ def submit_admission(request):
 
 def admission_success(request):
     return render(request, 'admission_success.html')
+
+def faculty_list(request):
+    department_filter = request.GET.get('department', 'all')
+    
+    # Base queryset
+    faculty = Faculty.objects.filter(is_active=True)
+    
+    # Apply department filter
+    if department_filter != 'all':
+        faculty = faculty.filter(department=department_filter)
+    
+    context = {
+        'faculty': faculty,
+        'departments': Faculty.DEPARTMENT_CHOICES,
+        'current_filter': department_filter
+    }
+    return render(request, 'faculty.html', context)
+
+def faculty_detail(request, faculty_id):
+    try:
+        faculty = Faculty.objects.get(id=faculty_id)
+        return JsonResponse({
+            'id': faculty.id,
+            'full_name': faculty.full_name,
+            'profile_photo': faculty.profile_photo.url if faculty.profile_photo else None,
+            'designation': faculty.designation,
+            'department': dict(Faculty.DEPARTMENT_CHOICES)[faculty.department],
+            'teaching_levels': [dict(Faculty.LEVEL_CHOICES)[level] for level in faculty.teaching_levels],
+            'qualifications': faculty.qualifications,
+            'experience_years': faculty.experience_years,
+            'bio': faculty.bio,
+            'specialization': faculty.specialization,
+            'linkedin': faculty.linkedin,
+            'twitter': faculty.twitter,
+            'website': faculty.website
+        })
+    except Faculty.DoesNotExist:
+        return JsonResponse({'error': 'Faculty member not found'}, status=404)

@@ -1,0 +1,155 @@
+{% extends 'dash-base.html' %}
+{% block title %}Faculty Management - Dashboard{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Header with Add Button -->
+    <div class="flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-gray-900">Faculty Management</h1>
+        <button onclick="openModal()" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors">
+            Add Faculty Member
+        </button>
+    </div>
+
+    <!-- Department Filter Tabs -->
+    <div class="bg-white p-4 rounded-lg shadow-sm">
+        <div class="flex flex-wrap gap-2">
+            <button onclick="filterFaculty('all')" 
+                    class="px-4 py-2 rounded-md text-sm font-medium transition-colors
+                           {% if current_filter == 'all' %}bg-indigo-600 text-white{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">
+                All
+            </button>
+            {% for dept, name in departments %}
+            <button onclick="filterFaculty('{{ dept }}')"
+                    class="px-4 py-2 rounded-md text-sm font-medium transition-colors
+                           {% if current_filter == dept %}bg-indigo-600 text-white{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">
+                {{ name }}
+            </button>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Faculty Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for member in faculty %}
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+            <div class="aspect-w-16 aspect-h-9">
+                <img src="{{ member.profile_photo.url|default:'/static/img/default-avatar.png' }}" 
+                     alt="{{ member.full_name }}" 
+                     class="w-full h-48 object-cover">
+            </div>
+            <div class="p-6">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900">{{ member.full_name }}</h3>
+                        <p class="text-sm text-gray-600">{{ member.designation }}</p>
+                    </div>
+                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-indigo-100 text-indigo-800">
+                        {{ member.department }}
+                    </span>
+                </div>
+                <div class="mt-4 space-y-2">
+                    <p class="text-sm text-gray-600">
+                        <i class="fas fa-graduation-cap mr-2"></i>
+                        {{ member.qualifications|truncatechars:50 }}
+                    </p>
+                    <p class="text-sm text-gray-600">
+                        <i class="fas fa-clock mr-2"></i>
+                        {{ member.experience_years }} years experience
+                    </p>
+                </div>
+                <div class="mt-4 flex justify-between items-center">
+                    <button onclick="viewDetails('{{ member.id }}')" 
+                            class="text-indigo-600 hover:text-indigo-800">
+                        View Details
+                    </button>
+                    <div class="flex space-x-2">
+                        <button onclick="editFaculty('{{ member.id }}')" 
+                                class="text-blue-600 hover:text-blue-800">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onclick="deleteFaculty('{{ member.id }}')" 
+                                class="text-red-600 hover:text-red-800">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-span-full text-center py-12 text-gray-500">
+            No faculty members found
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Faculty Form Modal -->
+<div id="facultyModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden">
+    <div class="min-h-screen px-4 text-center">
+        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </div>
+        <div class="inline-block align-middle bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+            <form id="facultyForm" class="p-6">
+                {% csrf_token %}
+                <h2 class="text-xl font-bold mb-6" id="modalTitle">Add Faculty Member</h2>
+                
+                <!-- Personal Information -->
+                <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Full Name*</label>
+                            <input type="text" name="full_name" required
+                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Profile Photo</label>
+                            <input type="file" name="profile_photo" accept="image/*"
+                                   class="mt-1 block w-full">
+                        </div>
+                    </div>
+                    
+                    <!-- Add more fields as needed -->
+                </div>
+
+                <div class="mt-6 flex justify-end space-x-3">
+                    <button type="button" onclick="closeModal()"
+                            class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                            class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Add your JavaScript for handling faculty management here
+function openModal() {
+    document.getElementById('facultyModal').classList.remove('hidden');
+}
+
+function closeModal() {
+    document.getElementById('facultyModal').classList.add('hidden');
+}
+
+function filterFaculty(department) {
+    window.location.href = `?department=${department}`;
+}
+
+async function handleFacultyForm(event) {
+    event.preventDefault();
+    // Add form submission logic
+}
+
+// Add more JavaScript functions as needed
+</script>
+{% endblock %}

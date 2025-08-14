@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Notice, Event, Subscriber, Admission
+from .models import Notice, Event, Subscriber, Admission, Faculty
 
 @admin.register(Notice)
 class NoticeAdmin(admin.ModelAdmin):
@@ -39,3 +39,10 @@ class AdmissionAdmin(admin.ModelAdmin):
     search_fields = ('application_id', 'full_name', 'email', 'phone')
     readonly_fields = ('application_id', 'applied_at', 'updated_at')
     date_hierarchy = 'applied_at'
+
+@admin.register(Faculty)
+class FacultyAdmin(admin.ModelAdmin):
+    list_display = ('full_name', 'designation', 'department', 'is_active', 'joining_date')
+    list_filter = ('department', 'is_active', 'teaching_levels')
+    search_fields = ('full_name', 'email', 'designation')
+    date_hierarchy = 'joining_date'

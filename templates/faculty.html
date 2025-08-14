@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Our Faculty - New Horizon School{% endblock %}
+
+{% block content %}
+<div class="pt-24 pb-16 bg-gray-50">
+    <!-- Hero Section -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">Our Faculty</h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Meet our dedicated team of educators committed to nurturing young minds and fostering academic excellence.
+            </p>
+        </div>
+
+        <!-- Department Filter -->
+        <div class="mb-8">
+            <div class="flex flex-wrap justify-center gap-2">
+                <button onclick="filterFaculty('all')" 
+                        class="px-4 py-2 rounded-full text-sm font-medium transition-colors
+                               {% if current_filter == 'all' %}bg-indigo-600 text-white{% else %}bg-white text-gray-700 hover:bg-gray-50 border{% endif %}">
+                    All Departments
+                </button>
+                {% for dept, name in departments %}
+                <button onclick="filterFaculty('{{ dept }}')"
+                        class="px-4 py-2 rounded-full text-sm font-medium transition-colors
+                               {% if current_filter == dept %}bg-indigo-600 text-white{% else %}bg-white text-gray-700 hover:bg-gray-50 border{% endif %}">
+                    {{ name }}
+                </button>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Faculty Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {% for member in faculty %}
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300">
+                <div class="aspect-w-1 aspect-h-1">
+                    <img src="{{ member.profile_photo.url|default:'/static/img/default-avatar.png' }}" 
+                         alt="{{ member.full_name }}" 
+                         class="w-full h-full object-cover">
+                </div>
+                <div class="p-6">
+                    <div class="text-center mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900">{{ member.full_name }}</h3>
+                        <p class="text-sm text-gray-600">{{ member.designation }}</p>
+                        <span class="inline-block px-3 py-1 mt-2 text-xs font-semibold rounded-full bg-indigo-100 text-indigo-800">
+                            {{ member.get_department_display }}
+                        </span>
+                    </div>
+                    
+                    <div class="space-y-2 text-sm text-gray-600">
+                        <p class="flex items-center justify-center">
+                            <i class="fas fa-graduation-cap mr-2"></i>
+                            {{ member.qualifications|truncatechars:50 }}
+                        </p>
+                        <p class="flex items-center justify-center">
+                            <i class="fas fa-chalkboard-teacher mr-2"></i>
+                            {{ member.experience_years }} years experience
+                        </p>
+                    </div>
+
+                    <button onclick="showDetails('{{ member.id }}')"
+                            class="mt-4 w-full px-4 py-2 bg-indigo-50 text-indigo-600 rounded-md hover:bg-indigo-100 transition-colors">
+                        View Profile
+                    </button>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-full text-center py-12">
+                <p class="text-gray-500">No faculty members found in this department.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Faculty Details Modal -->
+<div id="facultyModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+    <div class="min-h-screen px-4 text-center">
+        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </div>
+        
+        <!-- Modal content -->
+        <div class="inline-block align-middle bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4" id="modalContent">
+                <!-- Content will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function filterFaculty(department) {
+    window.location.href = `?department=${department}`;
+}
+
+async function showDetails(facultyId) {
+    const modal = document.getElementById('facultyModal');
+    const modalContent = document.getElementById('modalContent');
+    modal.classList.remove('hidden');
+
+    try {
+        const response = await fetch(`/faculty/${facultyId}/`);
+        const data = await response.json();
+        
+        modalContent.innerHTML = `
+            <div class="relative">
+                <button onclick="closeModal()" class="absolute right-0 top-0 p-2 text-gray-400 hover:text-gray-500">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+
+                <div class="flex flex-col sm:flex-row gap-6">
+                    <div class="sm:w-1/3">
+                        <img src="${data.profile_photo || '/static/img/default-avatar.png'}" 
+                             alt="${data.full_name}"
+                             class="w-full h-64 object-cover rounded-lg">
+                    </div>
+                    <div class="sm:w-2/3">
+                        <h3 class="text-2xl font-bold text-gray-900">${data.full_name}</h3>
+                        <p class="text-lg text-gray-600">${data.designation}</p>
+                        
+                        <div class="mt-4 space-y-4">
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-500">Department</h4>
+                                <p class="text-gray-900">${data.department}</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-500">Teaching Levels</h4>
+                                <p class="text-gray-900">${data.teaching_levels.join(', ')}</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-500">Qualifications</h4>
+                                <p class="text-gray-900">${data.qualifications}</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-500">Experience</h4>
+                                <p class="text-gray-900">${data.experience_years} years</p>
+                            </div>
+                            ${data.bio ? `
+                                <div>
+                                    <h4 class="text-sm font-medium text-gray-500">Bio</h4>
+                                    <p class="text-gray-900">${data.bio}</p>
+                                </div>
+                            ` : ''}
+                        </div>
+
+                        <!-- Social Links -->
+                        <div class="mt-6 flex gap-4">
+                            ${data.linkedin ? `
+                                <a href="${data.linkedin}" target="_blank" class="text-blue-600 hover:text-blue-800">
+                                    <i class="fab fa-linkedin text-xl"></i>
+                                </a>
+                            ` : ''}
+                            ${data.twitter ? `
+                                <a href="${data.twitter}" target="_blank" class="text-blue-400 hover:text-blue-600">
+                                    <i class="fab fa-twitter text-xl"></i>
+                                </a>
+                            ` : ''}
+                            ${data.website ? `
+                                <a href="${data.website}" target="_blank" class="text-gray-600 hover:text-gray-800">
+                                    <i class="fas fa-globe text-xl"></i>
+                                </a>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    } catch (error) {
+        console.error('Error:', error);
+        modalContent.innerHTML = '<p class="text-red-500">Error loading faculty details</p>';
+    }
+}
+
+function closeModal() {
+    const modal = document.getElementById('facultyModal');
+    modal.classList.add('opacity-0');
+    setTimeout(() => {
+        modal.classList.add('hidden');
+        modal.classList.remove('opacity-0');
+    }, 300);
+}
+
+// Close modal on escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeModal();
+    }
+});
+</script>
+{% endblock %}
