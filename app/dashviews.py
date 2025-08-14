@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 from django.utils import timezone
 from django.http import HttpResponse, JsonResponse
+from django.core.exceptions import ValidationError
+from django.views.decorators.http import require_http_methods
 import calendar
 from datetime import datetime, timedelta
 import csv
@@ -30,6 +32,12 @@ def overview(request):
         'rejected': Admission.objects.filter(status='REJECTED').count(),
     }
     
+    # Add faculty stats
+    faculty_stats = {}
+    department_choices = Faculty.DEPARTMENT_CHOICES
+    for dept, name in department_choices:
+        faculty_stats[dept] = Faculty.objects.filter(department=dept).count()
+    
     context = {
         'active_tab': 'overview',
         'notices': Notice.objects.all()[:5],  # Get last 5 notices
@@ -41,6 +49,9 @@ def overview(request):
             'upcoming_events': upcoming_events,
         },
         'admission_stats': admission_stats,
+        'faculty_stats': faculty_stats,
+        'department_choices': department_choices,
+        'recent_faculty': Faculty.objects.all().order_by('-joining_date')[:6],
     }
     return render(request, 'dash-overview.html', context)
 
@@ -371,20 +382,62 @@ def update_admission_status(request, admission_id):
     return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=405)
 
 @user_passes_test(is_admin)
+@require_http_methods(["GET", "POST"])
 def faculty_management(request):
+    if request.method == 'POST':
+        try:
+            data = request.POST
+            teaching_levels = json.loads(data.get('teaching_levels', '[]'))
+            
+            if not teaching_levels:
+                raise ValidationError('Teaching levels are required')
+
+            faculty = Faculty.objects.create(
+                full_name=data['full_name'],
+                email=data['email'],
+                phone=data['phone'],
+                designation=data['designation'],
+                department=data['department'],
+                qualifications=data['qualifications'],
+                experience_years=int(data['experience_years']),
+                joining_date=data['joining_date'],
+                address=data.get('address', ''),
+                bio=data.get('bio', ''),
+                linkedin=data.get('linkedin', ''),
+                twitter=data.get('twitter', ''),
+                teaching_levels=teaching_levels  # Add this line
+            )
+            
+            if 'profile_photo' in request.FILES:
+                faculty.profile_photo = request.FILES['profile_photo']
+                faculty.save()
+
+            return JsonResponse({
+                'status': 'success',
+                'message': 'Faculty member added successfully'
+            })
+            
+        except ValidationError as e:
+            return JsonResponse({
+                'status': 'error',
+                'message': str(e)
+            }, status=400)
+        except Exception as e:
+            return JsonResponse({
+                'status': 'error',
+                'message': str(e)
+            }, status=500)
+
     department_filter = request.GET.get('department', 'all')
-    
-    # Base queryset
     faculty = Faculty.objects.all()
-    
-    # Apply filters
     if department_filter != 'all':
         faculty = faculty.filter(department=department_filter)
-    
+
     context = {
         'active_tab': 'faculty',
         'faculty': faculty,
         'departments': Faculty.DEPARTMENT_CHOICES,
+        'level_choices': Faculty.LEVEL_CHOICES,
         'current_filter': department_filter
     }
     return render(request, 'dash-faculty.html', context)

@@ -2,6 +2,54 @@
 {% block title %}Faculty Management - Dashboard{% endblock %}
 
 {% block content %}
+<!-- Add this style block at the top of your content -->
+<style>
+    .modal-scrollbar::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    .modal-scrollbar::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+    
+    .modal-scrollbar::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+    }
+    
+    .modal-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    .form-input-enhanced {
+        @apply mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm 
+               focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 
+               bg-white transition-all duration-200;
+    }
+
+    .form-input-enhanced.border-red-500 {
+        @apply border-red-500 focus:border-red-500 focus:ring-red-500;
+    }
+
+    .section-container {
+        @apply space-y-4 p-4 border-2 border-gray-200 rounded-lg bg-gray-50 mb-6;
+    }
+
+    .section-title {
+        @apply text-lg font-semibold text-indigo-600 border-b-2 border-indigo-100 pb-2;
+    }
+
+    .error-message {
+        @apply text-red-500 text-sm mt-1 flex items-center;
+    }
+    
+    .error-message::before {
+        content: '⚠';
+        @apply mr-1;
+    }
+</style>
+
 <div class="space-y-6">
     <!-- Header with Add Button -->
     <div class="flex justify-between items-center">
@@ -19,6 +67,7 @@
                            {% if current_filter == 'all' %}bg-indigo-600 text-white{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">
                 All
             </button>
+            <div class="w-full border-b border-gray-200 my-2 md:hidden"></div>
             {% for dept, name in departments %}
             <button onclick="filterFaculty('{{ dept }}')"
                     class="px-4 py-2 rounded-md text-sm font-medium transition-colors
@@ -85,45 +134,140 @@
 </div>
 
 <!-- Faculty Form Modal -->
-<div id="facultyModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden">
-    <div class="min-h-screen px-4 text-center">
+<div id="facultyModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50 overflow-y-auto">
+    <div class="min-h-screen px-4 py-6 text-center">
         <div class="fixed inset-0 transition-opacity" aria-hidden="true">
             <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
         </div>
-        <div class="inline-block align-middle bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
-            <form id="facultyForm" class="p-6">
-                {% csrf_token %}
-                <h2 class="text-xl font-bold mb-6" id="modalTitle">Add Faculty Member</h2>
-                
-                <!-- Personal Information -->
-                <div class="space-y-4">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Full Name*</label>
-                            <input type="text" name="full_name" required
-                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+        <div class="inline-block w-full align-middle bg-white rounded-lg text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl">
+            <div class="max-h-[85vh] overflow-y-auto modal-scrollbar">
+                <form id="facultyForm" class="p-6" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-gray-200 text-indigo-700">Add Faculty Member</h2>
+                    
+                    <!-- Personal Information -->
+                    <div class="section-container">
+                        <h3 class="section-title">Personal Information</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Full Name*</label>
+                                <input type="text" name="full_name" required class="form-input-enhanced">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Email*</label>
+                                <input type="email" name="email" required class="form-input-enhanced">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Phone*</label>
+                                <input type="tel" name="phone" required class="form-input-enhanced">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Profile Photo</label>
+                                <input type="file" name="profile_photo" accept="image/*" id="profile_photo"
+                                       class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 
+                                              file:rounded-full file:border-2 file:border-indigo-100 file:text-sm 
+                                              file:font-semibold file:bg-indigo-50 file:text-indigo-700 
+                                              hover:file:bg-indigo-100 transition-all duration-200">
+                                <div id="imagePreview" class="mt-2 hidden">
+                                    <img src="" alt="Profile Preview" class="w-32 h-32 object-cover rounded-full border-4 border-indigo-100">
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Profile Photo</label>
-                            <input type="file" name="profile_photo" accept="image/*"
-                                   class="mt-1 block w-full">
+                        <div class="w-full mt-4">
+                            <label class="block text-sm font-medium text-gray-700">Address</label>
+                            <textarea name="address" rows="2" class="form-input-enhanced"></textarea>
                         </div>
                     </div>
-                    
-                    <!-- Add more fields as needed -->
-                </div>
 
-                <div class="mt-6 flex justify-end space-x-3">
-                    <button type="button" onclick="closeModal()"
-                            class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
-                        Cancel
-                    </button>
-                    <button type="submit"
-                            class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
-                        Save
-                    </button>
-                </div>
-            </form>
+                    <!-- Professional Information -->
+                    <div class="section-container">
+                        <h3 class="section-title">Professional Information</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Designation*</label>
+                                <input type="text" name="designation" required class="form-input-enhanced">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Department*</label>
+                                <select name="department" required class="form-input-enhanced">
+                                    <option value="">Select Department</option>
+                                    {% for dept, name in departments %}
+                                    <option value="{{ dept }}">{{ name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Experience (Years)*</label>
+                                <input type="number" name="experience_years" required min="0" class="form-input-enhanced">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Joining Date*</label>
+                                <input type="date" name="joining_date" required class="form-input-enhanced">
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Teaching Levels*</label>
+                            <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 p-3 bg-white rounded-md border-2 border-gray-200">
+                                <div class="col-span-2 lg:col-span-3 mb-2 pb-2 border-b-2 border-gray-100">
+                                    <span class="text-sm text-gray-500">Select all applicable levels</span>
+                                </div>
+                                {% for level, name in level_choices %}
+                                <label class="inline-flex items-center hover:bg-gray-50 p-2 rounded-md cursor-pointer transition-colors">
+                                    <input type="checkbox" 
+                                           name="teaching_levels" 
+                                           value="{{ level }}"
+                                           class="rounded border-2 border-gray-300 text-indigo-600 
+                                                  focus:border-indigo-500 focus:ring-indigo-500 cursor-pointer">
+                                    <span class="ml-2 text-sm">{{ name }}</span>
+                                </label>
+                                {% endfor %}
+                            </div>
+                            <div class="mt-1 text-sm text-red-500 hidden" id="teaching-levels-error">
+                                Please select at least one teaching level
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <label class="block text-sm font-medium text-gray-700">Qualifications*</label>
+                            <textarea name="qualifications" required rows="2" class="form-input-enhanced"></textarea>
+                        </div>
+
+                        <div class="mt-4">
+                            <label class="block text-sm font-medium text-gray-700">Bio</label>
+                            <textarea name="bio" rows="3" class="form-input-enhanced"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Social Links -->
+                    <div class="section-container">
+                        <h3 class="section-title">Social Links</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">LinkedIn Profile</label>
+                                <input type="url" name="linkedin" class="form-input-enhanced">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Twitter Profile</label>
+                                <input type="url" name="twitter" class="form-input-enhanced">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex justify-end space-x-3 pt-4 border-t-2 border-gray-200">
+                        <button type="button" onclick="closeModal()"
+                                class="px-4 py-2 border-2 border-gray-300 rounded-md text-gray-700 
+                                       hover:bg-gray-50 transition-all duration-200">
+                            Cancel
+                        </button>
+                        <button type="submit"
+                                class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 
+                                       border-2 border-indigo-600 transition-all duration-200">
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -132,24 +276,150 @@
 
 {% block extra_js %}
 <script>
-// Add your JavaScript for handling faculty management here
 function openModal() {
     document.getElementById('facultyModal').classList.remove('hidden');
 }
 
 function closeModal() {
     document.getElementById('facultyModal').classList.add('hidden');
+    document.getElementById('facultyForm').reset();
+    document.getElementById('imagePreview').classList.add('hidden');
 }
 
 function filterFaculty(department) {
     window.location.href = `?department=${department}`;
 }
 
-async function handleFacultyForm(event) {
-    event.preventDefault();
-    // Add form submission logic
+// Image preview functionality
+document.getElementById('profile_photo').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.getElementById('imagePreview');
+            preview.classList.remove('hidden');
+            preview.querySelector('img').src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+    }
+});
+
+// Form submission
+document.getElementById('facultyForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    try {
+        // Clear any existing error messages
+        const errorElements = document.querySelectorAll('.error-message');
+        errorElements.forEach(el => el.remove());
+        
+        const submitButton = this.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+        
+        const formData = new FormData(this);
+        
+        // Validate email format
+        const emailInput = this.querySelector('input[name="email"]');
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailInput.value)) {
+            showFieldError(emailInput, 'Please enter a valid email address');
+            throw new Error('Invalid email format');
+        }
+        
+        // Collect teaching levels
+        const teachingLevels = Array.from(
+            this.querySelectorAll('input[name="teaching_levels"]:checked')
+        ).map(checkbox => checkbox.value);
+        
+        if (teachingLevels.length === 0) {
+            document.getElementById('teaching-levels-error').classList.remove('hidden');
+            throw new Error('Please select at least one teaching level');
+        }
+        
+        // Convert array to JSON string
+        formData.set('teaching_levels', JSON.stringify(teachingLevels));
+
+        const response = await fetch('{% url "dashboard:faculty_management" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        });
+
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            throw new Error('Server returned an invalid response format');
+        }
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+            if (data.message.includes('UNIQUE constraint failed: app_faculty.email')) {
+                showFieldError(emailInput, 'This email is already registered');
+                throw new Error('Email already exists');
+            }
+            throw new Error(data.message || 'Server error occurred');
+        }
+        
+        if (data.status === 'success') {
+            showToast('success', data.message);
+            closeModal();
+            window.location.reload();
+        } else {
+            throw new Error(data.message || 'Unknown error occurred');
+        }
+    } catch (error) {
+        showToast('error', error.message);
+    } finally {
+        const submitButton = this.querySelector('button[type="submit"]');
+        submitButton.disabled = false;
+        submitButton.innerHTML = 'Save';
+    }
+});
+
+function showFieldError(inputElement, message) {
+    // Remove any existing error message
+    const existingError = inputElement.parentElement.querySelector('.error-message');
+    if (existingError) {
+        existingError.remove();
+    }
+    
+    // Add new error message
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-message text-red-500 text-sm mt-1';
+    errorDiv.innerHTML = message;
+    inputElement.parentElement.appendChild(errorDiv);
+    
+    // Highlight the input field
+    inputElement.classList.add('border-red-500');
+    
+    // Remove highlight when input changes
+    inputElement.addEventListener('input', function() {
+        this.classList.remove('border-red-500');
+        const error = this.parentElement.querySelector('.error-message');
+        if (error) {
+            error.remove();
+        }
+    }, { once: true });
 }
 
-// Add more JavaScript functions as needed
+function showToast(type, message) {
+    const toast = document.createElement('div');
+    toast.className = `fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 ${
+        type === 'success' ? 'bg-green-500' : 'bg-red-500'
+    } text-white`;
+    
+    toast.innerHTML = `<i class="fas fa-${
+        type === 'success' ? 'check-circle' : 'exclamation-circle'
+    } mr-2"></i>${message}`;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, type === 'success' ? 3000 : 5000);
+}
 </script>
 {% endblock %}

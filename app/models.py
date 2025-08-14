@@ -186,7 +186,7 @@ class Faculty(models.Model):
     # Professional Information
     designation = models.CharField(max_length=100)
     department = models.CharField(max_length=20, choices=DEPARTMENT_CHOICES)
-    teaching_levels = models.JSONField(help_text="List of teaching levels")
+    teaching_levels = models.JSONField(default=list)  # Add this line if not present
     qualifications = models.TextField()
     experience_years = models.PositiveIntegerField()
     

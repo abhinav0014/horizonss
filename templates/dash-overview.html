@@ -1,5 +1,5 @@
 {% extends 'dash-base.html' %}
-
+{% load dashboard_tags %}
 {% block title %}Overview - Dashboard{% endblock %}
 
 {% block content %}
@@ -76,6 +76,40 @@
         <div class="bg-gray-50 p-4 rounded-lg">
             <p class="text-sm text-gray-500">Rejected</p>
             <p class="text-2xl font-bold text-red-600">{{ admission_stats.rejected }}</p>
+        </div>
+    </div>
+</div>
+
+<!-- Faculty Statistics -->
+<div class="bg-white p-6 rounded-lg shadow-sm fade-in mt-6">
+    <h2 class="text-xl font-bold mb-4">Faculty Overview</h2>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        {% for dept, name in department_choices %}
+        <div class="bg-gray-50 p-4 rounded-lg">
+            <p class="text-sm text-gray-500">{{ name }}</p>
+            <p class="text-2xl font-bold text-indigo-600">{{ faculty_stats|get_item:dept }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Recent Faculty Members -->
+    <div class="mt-6">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold">Recent Faculty Members</h3>
+            <a href="{% url 'dashboard:faculty_management' %}" class="text-indigo-600 hover:text-indigo-800">View All</a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {% for member in recent_faculty %}
+            <div class="bg-gray-50 p-4 rounded-lg flex items-center space-x-4">
+                <img src="{{ member.profile_photo.url|default:'/static/img/default-avatar.png' }}" 
+                     alt="{{ member.full_name }}" 
+                     class="w-12 h-12 rounded-full object-cover">
+                <div>
+                    <h4 class="font-semibold">{{ member.full_name }}</h4>
+                    <p class="text-sm text-gray-600">{{ member.designation }}</p>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
 </div>

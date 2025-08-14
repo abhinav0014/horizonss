@@ -1,5 +1,5 @@
 from django import template
-from app.models import Notice, Event
+from app.models import Notice, Event, Faculty
 
 register = template.Library()
 
@@ -19,3 +19,7 @@ def get_school_stats():
         'success_rate': 98,
         'programs': 50
     }
+
+@register.simple_tag
+def get_faculty_members():
+    return Faculty.objects.filter(is_active=True)[:8]
