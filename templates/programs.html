@@ -1,0 +1,291 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Academic Programs - New Horizon S.S.{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 pt-20">
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-br from-indigo-600 to-purple-700 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl font-bold text-white mb-4" data-aos="fade-up">Academic Programs</h1>
+            <p class="text-xl text-indigo-100 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+                Comprehensive education programs designed to nurture future leaders
+            </p>
+        </div>
+    </section>
+
+    <!-- Programs Grid -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Early Education -->
+            <div class="mb-16" data-aos="fade-up">
+                <h2 class="text-2xl font-bold text-gray-900 mb-8 flex items-center">
+                    <span class="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center mr-3">
+                        <i class="fas fa-star text-yellow-600"></i>
+                    </span>
+                    Early Education
+                </h2>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6">
+                        <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4">
+                            <i class="fas fa-child text-yellow-600"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Nursery</h3>
+                        <p class="text-gray-600 mb-4">Foundation program focusing on basic skills development and creative learning.</p>
+                        <ul class="text-sm text-gray-500 space-y-2">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                Age group: 3-4 years
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                Play-based learning
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                Basic numeracy & literacy
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6">
+                        <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4">
+                            <i class="fas fa-pencil-alt text-yellow-600"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Lower KG</h3>
+                        <p class="text-gray-600 mb-4">Structured learning environment with focus on fundamental concepts.</p>
+                        <ul class="text-sm text-gray-500 space-y-2">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                Age group: 4-5 years
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                Interactive learning
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                Basic language skills
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6">
+                        <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4">
+                            <i class="fas fa-book-open text-yellow-600"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Upper KG</h3>
+                        <p class="text-gray-600 mb-4">Advanced early learning preparing students for primary education.</p>
+                        <ul class="text-sm text-gray-500 space-y-2">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                Age group: 5-6 years
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                Pre-writing skills
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                Number concepts
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Secondary Level -->
+            <div class="mb-16" data-aos="fade-up">
+                <h2 class="text-2xl font-bold text-gray-900 mb-8 flex items-center">
+                    <span class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                        <i class="fas fa-graduation-cap text-blue-600"></i>
+                    </span>
+                    Secondary Level (Class 9-10)
+                </h2>
+                <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-8">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-4">Core Subjects</h3>
+                            <ul class="space-y-3">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                    <span>English, Nepali, Mathematics</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                    <span>Science, Social Studies</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                    <span>Computer Science, Health & Physical Education</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold mb-4">Features</h3>
+                            <ul class="space-y-3">
+                                <li class="flex items-start">
+                                    <i class="fas fa-star text-yellow-500 mt-1 mr-2"></i>
+                                    <span>SEE Board Exam Preparation</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-star text-yellow-500 mt-1 mr-2"></i>
+                                    <span>Career Counseling</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-star text-yellow-500 mt-1 mr-2"></i>
+                                    <span>Practical Labs & Projects</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Higher Secondary (+2) -->
+            <div class="mb-16" data-aos="fade-up">
+                <h2 class="text-2xl font-bold text-gray-900 mb-8 flex items-center">
+                    <span class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
+                        <i class="fas fa-university text-purple-600"></i>
+                    </span>
+                    Higher Secondary (+2)
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Science Stream -->
+                    <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6">
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                            <i class="fas fa-flask text-green-600"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-4">Science</h3>
+                        <p class="text-gray-600 mb-4">Comprehensive science program with modern lab facilities.</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>Physics, Chemistry, Biology/Computer Science</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>Mathematics, English</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>Practical Labs & Research Projects</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Management Stream -->
+                    <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                            <i class="fas fa-chart-line text-blue-600"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-4">Management</h3>
+                        <p class="text-gray-600 mb-4">Business-focused curriculum with practical exposure.</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>Accountancy, Business Studies</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>Economics, Marketing</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>Business Mathematics, English</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bachelor Programs -->
+            <div class="mb-16" data-aos="fade-up">
+                <h2 class="text-2xl font-bold text-gray-900 mb-8 flex items-center">
+                    <span class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center mr-3">
+                        <i class="fas fa-award text-red-600"></i>
+                    </span>
+                    Bachelor Programs
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- BBA -->
+                    <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6">
+                        <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
+                            <i class="fas fa-briefcase text-indigo-600"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-4">BBA</h3>
+                        <p class="text-gray-600 mb-4">Bachelor of Business Administration</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>4-year program</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>Industry-focused curriculum</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>Internship opportunities</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- BBS -->
+                    <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6">
+                        <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
+                            <i class="fas fa-landmark text-orange-600"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-4">BBS</h3>
+                        <p class="text-gray-600 mb-4">Bachelor of Business Studies</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>4-year program</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>Comprehensive business education</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>Research-based learning</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="bg-indigo-600 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold text-white mb-4">Ready to Begin Your Journey?</h2>
+            <p class="text-indigo-100 mb-8">Take the first step towards your bright future with New Horizon</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="{% url 'app:admission' %}" 
+                   class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50">
+                    Apply Now
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+                <a href="{% url 'app:contact' %}" 
+                   class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-400">
+                    Contact Us
+                    <i class="fas fa-phone ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Initialize AOS -->
+<script>
+    AOS.init({
+        duration: 800,
+        offset: 100,
+        once: true
+    });
+</script>
+{% endblock %}

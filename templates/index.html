@@ -39,28 +39,40 @@
     <!-- Hero Section -->
     <section class="hero-gradient min-h-screen flex items-center pt-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-            <div data-aos="fade-right" class="text-center md:text-left">
+            <!-- Enhanced Hero Content -->
+            <div data-aos="fade-right" class="text-center md:text-left space-y-6">
+                <span class="inline-block px-4 py-1 bg-white/20 rounded-full text-white text-sm font-medium tracking-wide">
+                    Welcome to New Horizon
+                </span>
                 <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-                    Shaping Tomorrow's Leaders Today
+                    Shaping Tomorrow's <span class="text-yellow-300">Leaders</span> Today
                 </h1>
-                <p class="mt-4 sm:mt-6 text-base sm:text-lg text-indigo-100">
+                <p class="mt-4 sm:mt-6 text-base sm:text-lg text-indigo-100 max-w-lg">
                     Experience excellence in education through innovative learning, 
                     dedicated faculty, and a nurturing environment.
                 </p>
-                <div class="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
-                    <button class="bg-white text-indigo-600 px-6 sm:px-8 py-2 sm:py-3 rounded-full hover:bg-indigo-50 transition-colors">
-                        Explore Programs
+                <div onclick="window.location='/programs'" class="flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
+                    <button class="group bg-white text-indigo-600 px-6 sm:px-8 py-2 sm:py-3 rounded-full hover:bg-indigo-50 transition-all transform hover:scale-105 flex items-center justify-center space-x-2">
+                        <span>Explore Programs</span>
+                        <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                        </svg>
                     </button>
-                    <button class="border-2 border-white text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full hover:bg-white/10 transition-colors">
-                        Virtual Tour
+                    <button class="group border-2 border-white text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full hover:bg-white hover:text-indigo-600 transition-all transform hover:scale-105 flex items-center justify-center space-x-2">
+                        <span>Virtual Tour</span>
+                        <svg class="w-5 h-5 transition-transform group-hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                        </svg>
                     </button>
                 </div>
             </div>
+            <!-- Enhanced Hero Image -->
             <div class="relative hidden md:block" data-aos="fade-left">
-                <img src="{% static 'img/hero-student.png' %}" alt="Students at New Horizon School" class="animate-float rounded-lg shadow-2xl">
-                <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-lg shadow-xl" data-aos="fade-up" data-aos-delay="200">
+                <div class="absolute -inset-0.5 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg blur opacity-30 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+                <img src="{% static 'img/hero-student.png' %}" alt="Students at New Horizon School" class="animate-float rounded-lg shadow-2xl relative">
+                <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-lg shadow-xl transform hover:scale-105 transition-transform" data-aos="fade-up" data-aos-delay="200">
                     <div class="flex items-center space-x-2">
-                        <div class="text-2xl font-bold text-indigo-600">98%</div>
+                        <div class="text-2xl font-bold text-indigo-600 animate-pulse">98%</div>
                         <div class="text-sm text-gray-600">Graduate Success Rate</div>
                     </div>
                 </div>
@@ -68,26 +80,34 @@
         </div>
     </section>
 
-    <!-- Stats Section -->
+    <!-- Enhanced Stats Section -->
     <section class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
                 {% get_school_stats as stats %}
-                <div class="text-center" data-aos="fade-up" data-aos-delay="0">
-                    <div class="text-4xl font-bold text-indigo-600 mb-2">{{ stats.students }}+</div>
-                    <div class="text-gray-600">Students</div>
+                <div class="text-center transform hover:scale-105 transition-transform cursor-pointer" data-aos="fade-up" data-aos-delay="0">
+                    <div class="bg-indigo-50 rounded-xl p-6">
+                        <div class="text-4xl font-bold text-indigo-600 mb-2 counter" data-target="{{ stats.students }}">0</div>
+                        <div class="text-gray-600 font-medium">Students</div>
+                    </div>
                 </div>
-                <div class="text-center" data-aos="fade-up" data-aos-delay="100">
-                    <div class="text-4xl font-bold text-indigo-600 mb-2">{{ stats.success_rate }}%</div>
-                    <div class="text-gray-600">College Acceptance</div>
+                <div class="text-center transform hover:scale-105 transition-transform cursor-pointer" data-aos="fade-up" data-aos-delay="100">
+                    <div class="bg-indigo-50 rounded-xl p-6">
+                        <div class="text-4xl font-bold text-indigo-600 mb-2 counter" data-target="{{ stats.success_rate }}">0</div>
+                        <div class="text-gray-600 font-medium">College Acceptance</div>
+                    </div>
                 </div>
-                <div class="text-center" data-aos="fade-up" data-aos-delay="200">
-                    <div class="text-4xl font-bold text-indigo-600 mb-2">{{ stats.teachers }}+</div>
-                    <div class="text-gray-600">Expert Faculty</div>
+                <div class="text-center transform hover:scale-105 transition-transform cursor-pointer" data-aos="fade-up" data-aos-delay="200">
+                    <div class="bg-indigo-50 rounded-xl p-6">
+                        <div class="text-4xl font-bold text-indigo-600 mb-2 counter" data-target="{{ stats.teachers }}">0</div>
+                        <div class="text-gray-600 font-medium">Expert Faculty</div>
+                    </div>
                 </div>
-                <div class="text-center" data-aos="fade-up" data-aos-delay="300">
-                    <div class="text-4xl font-bold text-indigo-600 mb-2">{{ stats.programs }}+</div>
-                    <div class="text-gray-600">Programs</div>
+                <div class="text-center transform hover:scale-105 transition-transform cursor-pointer" data-aos="fade-up" data-aos-delay="300">
+                    <div class="bg-indigo-50 rounded-xl p-6">
+                        <div class="text-4xl font-bold text-indigo-600 mb-2 counter" data-target="{{ stats.programs }}">0</div>
+                        <div class="text-gray-600 font-medium">Programs</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -100,16 +120,60 @@
                 Why Choose Horizon School?
             </h2>
             <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow" data-aos="fade-up">
+                <!-- Academic Excellence -->
+                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow transform hover:scale-105 duration-300" data-aos="fade-up">
                     <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
                         <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                         </svg>
                     </div>
                     <h3 class="text-xl font-semibold mb-2">Academic Excellence</h3>
-                    <p class="text-gray-600">Rigorous curriculum designed to challenge and inspire students to reach their full potential.</p>
+                    <p class="text-gray-600">Consistently achieving top board results with our research-based curriculum and experienced faculty.</p>
                 </div>
-                <!-- Add more feature cards with different icons and content -->
+
+                <!-- Technology Integration -->
+                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow transform hover:scale-105 duration-300" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Smart Learning</h3>
+                    <p class="text-gray-600">Digital classrooms, coding labs, and interactive learning platforms preparing students for the digital age.</p>
+                </div>
+
+                <!-- Character Development -->
+                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow transform hover:scale-105 duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Character Building</h3>
+                    <p class="text-gray-600">Focus on values, leadership skills, and emotional intelligence through dedicated life skills programs.</p>
+                </div>
+
+                <!-- Safety & Security -->
+                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow transform hover:scale-105 duration-300" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Safe Environment</h3>
+                    <p class="text-gray-600">24/7 CCTV surveillance, trained security personnel, and strict safety protocols for complete peace of mind.</p>
+                </div>
+
+                <!-- Individual Attention -->
+                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow transform hover:scale-105 duration-300" data-aos="fade-up" data-aos-delay="400">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Personal Attention</h3>
+                    <p class="text-gray-600">Small class sizes and dedicated teachers ensure that each student receives the attention they deserve.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -123,6 +187,7 @@
                 <div class="bg-white rounded-xl shadow-sm p-6 hover-lift">
                     <h3 class="text-xl font-semibold mb-4">Important Notices</h3>
                     {% get_latest_notices as notices %}
+                    {% if notices %}
                     {% for notice in notices %}
                     <div class="mb-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                         <h4 class="font-medium text-gray-900">{{ notice.title }}</h4>
@@ -130,24 +195,43 @@
                         <span class="text-xs text-gray-500">{{ notice.created_at|date:"M d, Y" }}</span>
                     </div>
                     {% endfor %}
+                    {% else %}
+                    <div class="flex flex-col items-center justify-center p-8 bg-gray-50 rounded-lg">
+                        <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                            <i class="far fa-bell text- 2xl text-gray-400"></i>
+                        </div>
+                        <p class="text-gray-500 text-center">No notices available at the moment.</p>
+                        <p class="text-sm text-gray-400 text-center mt-1">Check back later for updates!</p>
+                    </div>
+                    {% endif %}
                 </div>
 
                 <!-- Events Section -->
                 <div class="bg-white rounded-xl shadow-sm p-6 hover-lift">
                     <h3 class="text-xl font-semibold mb-4">Upcoming Events</h3>
                     {% get_upcoming_events as events %}
-                    {% for event in events %}
-                    <div class="mb-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                        <h4 class="font-medium text-gray-900">{{ event.title }}</h4>
-                        <p class="text-sm text-gray-600 mt-1">{{ event.description|truncatewords:20 }}</p>
-                        <div class="flex items-center text-xs text-gray-500 mt-2">
-                            <i class="far fa-calendar mr-2"></i>
-                            {{ event.start_date|date:"M d, Y" }}
-                            <i class="far fa-clock mx-2"></i>
-                            {{ event.start_time|time:"g:i A" }}
+                    {% if events %}
+                        {% for event in events %}
+                        <div class="mb-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                            <h4 class="font-medium text-gray-900">{{ event.title }}</h4>
+                            <p class="text-sm text-gray-600 mt-1">{{ event.description|truncatewords:20 }}</p>
+                            <div class="flex items-center text-xs text-gray-500 mt-2">
+                                <i class="far fa-calendar mr-2"></i>
+                                {{ event.start_date|date:"M d, Y" }}
+                                <i class="far fa-clock mx-2"></i>
+                                {{ event.start_time|time:"g:i A" }}
+                            </div>
                         </div>
-                    </div>
-                    {% endfor %}
+                        {% endfor %}
+                    {% else %}
+                        <div class="flex flex-col items-center justify-center p-8 bg-gray-50 rounded-lg">
+                            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                <i class="far fa-calendar-times text-2xl text-gray-400"></i>
+                            </div>
+                            <p class="text-gray-500 text-center">No upcoming events at the moment.</p>
+                            <p class="text-sm text-gray-400 text-center mt-1">Check back later for new events!</p>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -232,6 +316,57 @@
             once: true,
             offset: 100,
             disable: 'mobile'
+        });
+    </script>
+
+    <!-- Add this CSS to your styles -->
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        }
+        
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .hover-lift {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+    </style>
+
+    <!-- Add this JavaScript for counter animation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const counters = document.querySelectorAll('.counter');
+            const speed = 200;
+
+            counters.forEach(counter => {
+                const target = +counter.dataset.target;
+                const increment = target / speed;
+
+                const updateCount = () => {
+                    const count = +counter.innerText;
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + increment);
+                        setTimeout(updateCount, 1);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+
+                updateCount();
+            });
         });
     </script>
 {% endblock %}

@@ -1,0 +1,25 @@
+<div>
+    <label for="id_{{ field.name }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        {{ field.label }}
+    </label>
+    {% if field.errors %}
+    <div class="text-red-500 text-sm mb-1">
+        {{ field.errors }}
+    </div>
+    {% endif %}
+    <div class="relative">
+        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">
+            <i class="fas fa-{{ icon }}"></i>
+        </span>
+        <input type="{{ type|default:'text' }}" 
+               name="{{ field.name }}" 
+               id="id_{{ field.name }}"
+               {% if field.field.required %}required{% endif %}
+               class="w-full pl-10 pr-4 py-2 rounded-lg border dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white transition-colors"
+               placeholder="{{ field.field.widget.attrs.placeholder|default:field.label }}"
+               {% if type == "password" %}autocomplete="current-password"{% endif %}>
+    </div>
+    {% if field.help_text %}
+    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ field.help_text|safe }}</p>
+    {% endif %}
+</div>

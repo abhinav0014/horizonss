@@ -4,56 +4,200 @@
 {% block meta_title %}About Us - New Horizon S.S.{% endblock %}
 {% block meta_description %}Learn about our history, mission, values, and commitment to excellence in education at New Horizon School.{% endblock %}
 
-{% block meta_keywords %}about school, school history, school mission, education values, teaching methodology{% endblock %}
-
-{% block og_type %}article{% endblock %}
-
-{% block schema_type %}EducationalOrganization{% endblock %}
-
-{% block schema_extra %}
-"description": "Comprehensive educational institution committed to academic excellence",
-"foundingDate": "1990",
-"address": {
-    "@type": "PostalAddress",
-    "streetAddress": "123 Education Street",
-    "addressLocality": "City",
-    "addressRegion": "State",
-    "postalCode": "12345",
-    "addressCountry": "Country"
-}
-{% endblock %}
-
 {% block content %}
-<section class="pt-20 pb-12 bg-gray-50">
+<!-- Hero Section -->
+<section class="pt-24 pb-16 bg-gradient-to-br from-indigo-600 to-purple-700">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto">
-            <h1 class="text-4xl font-bold text-gray-900 mb-6">About New Horizon</h1>
-            <p class="text-lg text-gray-600 mb-8">
-                Committed to excellence in education since [Year]
+        <div class="text-center max-w-3xl mx-auto" data-aos="fade-up">
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">About New Horizon</h1>
+            <p class="text-xl text-indigo-100 mb-8">
+                Shaping minds, building futures since 1990
             </p>
         </div>
     </div>
-</section>
-
-<!-- Mission & Vision -->
-<section class="py-12 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid md:grid-cols-2 gap-8">
-            <!-- Mission -->
-            <div class="bg-gray-50 p-6 rounded-lg">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Our Mission</h2>
-                <p class="text-gray-600">
-                    To provide quality education that empowers students with knowledge, skills, and values needed for future success.
-                </p>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="bg-white/10 backdrop-blur-lg rounded-xl p-6 text-white">
+                <div class="text-4xl font-bold mb-2">30+</div>
+                <div class="text-indigo-100">Years of Excellence</div>
             </div>
-            <!-- Vision -->
-            <div class="bg-gray-50 p-6 rounded-lg">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Our Vision</h2>
-                <p class="text-gray-600">
-                    To be a leading educational institution that nurtures future leaders and innovators.
-                </p>
+            <div class="bg-white/10 backdrop-blur-lg rounded-xl p-6 text-white">
+                <div class="text-4xl font-bold mb-2">5000+</div>
+                <div class="text-indigo-100">Alumni Worldwide</div>
+            </div>
+            <div class="bg-white/10 backdrop-blur-lg rounded-xl p-6 text-white">
+                <div class="text-4xl font-bold mb-2">98%</div>
+                <div class="text-indigo-100">Success Rate</div>
             </div>
         </div>
     </div>
 </section>
+
+<!-- Mission & Vision Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Mission -->
+            <div class="bg-gray-50 rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow" data-aos="fade-right">
+                <div class="w-16 h-16 bg-indigo-100 rounded-lg flex items-center justify-center mb-6">
+                    <i class="fas fa-bullseye text-2xl text-indigo-600"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">Our Mission</h2>
+                <p class="text-gray-600 leading-relaxed mb-6">
+                    To provide exceptional education that empowers students with knowledge, skills, and values needed for future success. We strive to create an environment where every student can discover their potential and develop into well-rounded individuals ready to make positive contributions to society.
+                </p>
+                <ul class="space-y-3 text-gray-600">
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                        <span>Fostering academic excellence and critical thinking</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                        <span>Developing leadership skills and character</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                        <span>Promoting innovative and experiential learning</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Vision -->
+            <div class="bg-gray-50 rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow" data-aos="fade-left">
+                <div class="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
+                    <i class="fas fa-eye text-2xl text-purple-600"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">Our Vision</h2>
+                <p class="text-gray-600 leading-relaxed mb-6">
+                    To be a leading educational institution that nurtures future leaders and innovators. We envision creating a learning ecosystem where students are inspired to excel, innovate, and contribute meaningfully to the global community while maintaining strong ethical values.
+                </p>
+                <ul class="space-y-3 text-gray-600">
+                    <li class="flex items-start">
+                        <i class="fas fa-star text-yellow-500 mt-1 mr-2"></i>
+                        <span>Global recognition for academic excellence</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-star text-yellow-500 mt-1 mr-2"></i>
+                        <span>Innovation in teaching methodologies</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-star text-yellow-500 mt-1 mr-2"></i>
+                        <span>Holistic development of students</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- History Section -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12" data-aos="fade-up">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Our Journey</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+                Three decades of commitment to educational excellence and innovation
+            </p>
+        </div>
+        
+        <div class="relative">
+            <!-- Timeline -->
+            <div class="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gray-200"></div>
+            
+            <!-- Timeline Items -->
+            <div class="space-y-12">
+                <div class="relative" data-aos="fade-right">
+                    <div class="md:w-1/2 md:pr-8">
+                        <div class="bg-white p-6 rounded-xl shadow-sm">
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">1990 - Foundation</h3>
+                            <p class="text-gray-600">Established with a vision to provide quality education in Banganga.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative" data-aos="fade-left">
+                    <div class="md:ml-auto md:w-1/2 md:pl-8">
+                        <div class="bg-white p-6 rounded-xl shadow-sm">
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">2000 - Expansion</h3>
+                            <p class="text-gray-600">Added new facilities and expanded academic programs.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative" data-aos="fade-right">
+                    <div class="md:w-1/2 md:pr-8">
+                        <div class="bg-white p-6 rounded-xl shadow-sm">
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">2010 - Innovation</h3>
+                            <p class="text-gray-600">Introduced modern teaching methodologies and digital classrooms.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative" data-aos="fade-left">
+                    <div class="md:ml-auto md:w-1/2 md:pl-8">
+                        <div class="bg-white p-6 rounded-xl shadow-sm">
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">2020 - Excellence</h3>
+                            <p class="text-gray-600">Achieved numerous accolades and expanded to higher education.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Values Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12" data-aos="fade-up">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Our Core Values</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+                The principles that guide our educational philosophy
+            </p>
+        </div>
+        
+        <div class="grid md:grid-cols-4 gap-6">
+            <div class="p-6 bg-gray-50 rounded-xl text-center" data-aos="fade-up" data-aos-delay="100">
+                <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-heart text-red-600"></i>
+                </div>
+                <h3 class="font-semibold text-gray-900 mb-2">Excellence</h3>
+                <p class="text-gray-600 text-sm">Striving for the highest standards in everything we do</p>
+            </div>
+            
+            <div class="p-6 bg-gray-50 rounded-xl text-center" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-users text-blue-600"></i>
+                </div>
+                <h3 class="font-semibold text-gray-900 mb-2">Integrity</h3>
+                <p class="text-gray-600 text-sm">Maintaining high ethical standards and honesty</p>
+            </div>
+            
+            <div class="p-6 bg-gray-50 rounded-xl text-center" data-aos="fade-up" data-aos-delay="300">
+                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-lightbulb text-green-600"></i>
+                </div>
+                <h3 class="font-semibold text-gray-900 mb-2">Innovation</h3>
+                <p class="text-gray-600 text-sm">Embracing new ideas and creative solutions</p>
+            </div>
+            
+            <div class="p-6 bg-gray-50 rounded-xl text-center" data-aos="fade-up" data-aos-delay="400">
+                <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-star text-yellow-600"></i>
+                </div>
+                <h3 class="font-semibold text-gray-900 mb-2">Leadership</h3>
+                <p class="text-gray-600 text-sm">Developing tomorrow's leaders today</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Initialize AOS -->
+<script>
+    AOS.init({
+        duration: 800,
+        offset: 100,
+        once: true
+    });
+</script>
 {% endblock %}

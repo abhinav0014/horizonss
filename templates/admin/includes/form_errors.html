@@ -1,0 +1,10 @@
+{% if form.errors %}
+<div class="mb-6 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 dark:bg-red-900 dark:border-red-600 dark:text-red-200 fade-in">
+    {% for error in form.non_field_errors %}
+    <p class="flex items-center">
+        <i class="fas fa-exclamation-circle mr-2"></i>
+        {{ error }}
+    </p>
+    {% endfor %}
+</div>
+{% endif %}

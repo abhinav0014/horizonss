@@ -131,6 +131,6 @@ MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-# Add these lines at the bottom of the file
-LOGIN_URL = '/admin/login/'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = 'app:admin_login'
+LOGIN_REDIRECT_URL = 'admin:index'  # Redirect to admin index after login
+LOGOUT_REDIRECT_URL = 'app:home'  # Redirect to home page after logout

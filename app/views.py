@@ -6,6 +6,7 @@ from datetime import datetime
 from django.http import JsonResponse
 from .models import Subscriber
 import json
+from django.db.models import Q
 
 def home(request):
     context = {
@@ -49,9 +50,32 @@ def about(request):
     return render(request, 'about.html', context)
 
 def notices(request):
-    notices = Notice.objects.all().order_by('-created_at')
+    category = request.GET.get('category', 'all')
+    search_query = request.GET.get('search', '')
+    
+    # Start with all notices
+    notices = Notice.objects.all()
+    
+    # Apply category filters
+    if category == 'important':
+        notices = notices.filter(notice_type='IMPORTANT')
+    elif category == 'general':
+        notices = notices.filter(notice_type='GENERAL')
+    
+    # Apply search filter
+    if search_query:
+        notices = notices.filter(
+            Q(title__icontains=search_query) |
+            Q(content__icontains=search_query)
+        )
+    
+    # Always order by latest first
+    notices = notices.order_by('-created_at')
+    
     context = {
-        'notices': notices
+        'notices': notices,
+        'current_category': category,
+        'search_query': search_query
     }
     return render(request, 'notices.html', context)
 
@@ -283,3 +307,6 @@ def faculty_detail(request, faculty_id):
         })
     except Faculty.DoesNotExist:
         return JsonResponse({'error': 'Faculty member not found'}, status=404)
+
+def programs(request):
+    return render(request, 'programs.html')

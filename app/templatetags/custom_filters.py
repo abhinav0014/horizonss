@@ -32,3 +32,11 @@ def ordinal(n):
 @register.simple_tag
 def get_grades():
     return ['NSY', 'LKG', 'UKG', '1', '2', '3', '4', '5', '6', '7', '8', '9', '11', '12']
+
+@register.filter(name='multiply')
+def multiply(value, arg):
+    """Multiplies the value by the argument"""
+    try:
+        return int(value) * int(arg)
+    except (ValueError, TypeError):
+        return ''
