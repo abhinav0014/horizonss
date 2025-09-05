@@ -3,10 +3,12 @@ from django.contrib.auth.decorators import user_passes_test
 from .models import Notice, Event, Admission, Faculty
 from calendar import monthcalendar
 from datetime import datetime
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from .models import Subscriber
 import json
 from django.db.models import Q
+from django.template.loader import render_to_string
+import weasyprint
 
 def home(request):
     context = {
@@ -252,7 +254,7 @@ def submit_admission(request):
                 previous_marksheet=request.FILES.get('previous_marksheet'),
                 transfer_certificate=request.FILES.get('transfer_certificate'),
             )
-            
+            request.session['admission_application_id'] = admission.application_id
             return JsonResponse({
                 'status': 'success',
                 'application_id': admission.application_id
@@ -268,7 +270,17 @@ def submit_admission(request):
     return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=405)
 
 def admission_success(request):
-    return render(request, 'admission_success.html')
+    application_id = request.session.get('admission_application_id')
+    if not application_id:
+        return redirect('app:admission')  # Redirect if no application ID in session
+    
+    try:
+        admission = Admission.objects.get(application_id=application_id)
+        # Clear the session data after retrieving
+        del request.session['admission_application_id']
+        return render(request, 'admission_success.html', {'admission': admission})
+    except Admission.DoesNotExist:
+        return redirect('app:admission')
 
 def faculty_list(request):
     department_filter = request.GET.get('department', 'all')
@@ -310,3 +322,21 @@ def faculty_detail(request, faculty_id):
 
 def programs(request):
     return render(request, 'programs.html')
+
+def download_admission_pdf(request, application_id):
+    try:
+        admission = Admission.objects.get(application_id=application_id)
+        
+        # Render the HTML template
+        html_string = render_to_string('admission_pdf.html', {'admission': admission})
+        
+        # Create the PDF
+        pdf_file = weasyprint.HTML(string=html_string).write_pdf()
+        
+        # Generate response
+        response = HttpResponse(pdf_file, content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="admission_{application_id}.pdf"'
+        
+        return response
+    except Admission.DoesNotExist:
+        return HttpResponse('Admission application not found', status=404)

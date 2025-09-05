@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 
+from dotenv import load_dotenv
+load_dotenv()  # Load environment variables from .env file
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -134,3 +137,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_URL = 'app:admin_login'
 LOGIN_REDIRECT_URL = 'admin:index'  # Redirect to admin index after login
 LOGOUT_REDIRECT_URL = 'app:home'  # Redirect to home page after logout
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Or your email provider
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST') # use env variable for security
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD') # use env variable for security
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL') # use env variable for security

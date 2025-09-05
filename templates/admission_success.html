@@ -40,89 +40,197 @@
     .success-card {
         page-break-inside: avoid;
     }
+
+    /* Additional print optimizations */
+    .detail-label {
+        color: #4a5568 !important;
+        font-weight: 600 !important;
+    }
+    .detail-value {
+        color: #1a202c !important;
+    }
+    .section-title {
+        color: #2d3748 !important;
+        break-after: avoid !important;
+    }
+    .document-title {
+        font-size: 24px !important;
+        margin-bottom: 20px !important;
+    }
 }
 </style>
 
 <div class="min-h-screen bg-gray-50 pt-20 pb-12">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Success Card -->
-        <div class="success-card bg-white rounded-lg shadow-sm p-8 text-center">
-            <!-- Success Icon -->
-            <div class="mb-6">
-                <div class="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+        <div class="success-card bg-white rounded-lg shadow-sm p-8">
+            <!-- Header Section -->
+            <div class="text-center mb-8">
+                <div class="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
                     <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                     </svg>
                 </div>
+                <h1 class="text-3xl font-bold text-gray-900 mb-2 document-title">Application Submitted Successfully!</h1>
+                <p class="text-lg text-gray-600">Reference ID: {{ admission.application_id }}</p>
             </div>
-
-            <!-- Success Message -->
-            <h1 class="text-3xl font-bold text-gray-900 mb-4">Application Submitted Successfully!</h1>
-            <p class="text-lg text-gray-600 mb-8">Thank you for choosing New Horizon School</p>
 
             <!-- Application Details -->
-            <div class="bg-gray-50 rounded-lg p-6 mb-8">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
-                    <div>
-                        <p class="text-sm text-gray-500">Application ID</p>
-                        <p class="text-lg font-semibold text-gray-900">{{ admission.application_id }}</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Student Name</p>
-                        <p class="text-lg font-semibold text-gray-900">{{ admission.full_name }}</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Applied For</p>
-                        <p class="text-lg font-semibold text-gray-900">Grade {{ admission.applying_for_grade }}</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Application Date</p>
-                        <p class="text-lg font-semibold text-gray-900">{{ admission.applied_at|date:"F d, Y" }}</p>
+            <div class="space-y-8">
+                <!-- Personal Information -->
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4 section-title">Personal Information</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-sm text-gray-500 detail-label">Full Name</p>
+                            <p class="text-lg font-medium text-gray-900 detail-value">{{ admission.full_name|default:"Not Provided" }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 detail-label">Date of Birth</p>
+                            <p class="text-lg font-medium text-gray-900 detail-value">{{ admission.date_of_birth|date:"F d, Y"|default:"Not Provided" }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 detail-label">Gender</p>
+                            <p class="text-lg font-medium text-gray-900 detail-value">{{ admission.get_gender_display|default:"Not Provided" }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 detail-label">Email</p>
+                            <p class="text-lg font-medium text-gray-900 detail-value">{{ admission.email|default:"Not Provided" }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 detail-label">Phone</p>
+                            <p class="text-lg font-medium text-gray-900 detail-value">{{ admission.phone|default:"Not Provided" }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 detail-label">Address</p>
+                            <p class="text-lg font-medium text-gray-900 detail-value">{{ admission.address|default:"Not Provided" }}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Next Steps -->
-            <div class="bg-indigo-50 rounded-lg p-6 mb-8">
-                <h2 class="text-xl font-semibold text-indigo-900 mb-4">Next Steps</h2>
-                <ul class="space-y-3 text-left">
-                    <li class="flex items-start">
-                        <svg class="w-5 h-5 text-indigo-600 mt-1 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span class="text-gray-700">You will receive a confirmation email shortly with your application details.</span>
-                    </li>
-                    <li class="flex items-start">
-                        <svg class="w-5 h-5 text-indigo-600 mt-1 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span class="text-gray-700">Our admission team will review your application within 5-7 working days.</span>
-                    </li>
-                    <li class="flex items-start">
-                        <svg class="w-5 h-5 text-indigo-600 mt-1 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span class="text-gray-700">You will be contacted for an interview and entrance test scheduling.</span>
-                    </li>
-                </ul>
-            </div>
+                <!-- Academic Information -->
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4 section-title">Academic Information</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-sm text-gray-500 detail-label">Applying for Grade</p>
+                            <p class="text-lg font-medium text-gray-900 detail-value">{{ admission.applying_for_grade|default:"Not Provided" }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 detail-label">Previous School</p>
+                            <p class="text-lg font-medium text-gray-900 detail-value">{{ admission.previous_school|default:"Not Provided" }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 detail-label">Previous Grade</p>
+                            <p class="text-lg font-medium text-gray-900 detail-value">{{ admission.previous_grade|default:"Not Provided" }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 detail-label">Previous Percentage</p>
+                            <p class="text-lg font-medium text-gray-900 detail-value">{{ admission.previous_percentage|default:"Not Provided" }}%</p>
+                        </div>
+                    </div>
+                </div>
 
-            <!-- Action Buttons -->
-            <div class="flex flex-col sm:flex-row justify-center gap-4 print-hide">
-                <a href="{% url 'app:home' %}" 
-                   class="inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">
-                    Back to Home
-                </a>
-                <button onclick="window.print()" 
-                        class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 rounded-md shadow-sm text-base font-medium text-gray-700 bg-white hover:bg-gray-50">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
-                    </svg>
-                    Print Application
-                </button>
+                <!-- Parent Information -->
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4 section-title">Parent Information</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Father's Details -->
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900 mb-3">Father's Details</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <p class="text-sm text-gray-500 detail-label">Name</p>
+                                    <p class="text-lg font-medium text-gray-900 detail-value">{{ admission.father_name|default:"Not Provided" }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500 detail-label">Occupation</p>
+                                    <p class="text-lg font-medium text-gray-900 detail-value">{{ admission.father_occupation|default:"Not Provided" }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500 detail-label">Phone</p>
+                                    <p class="text-lg font-medium text-gray-900 detail-value">{{ admission.father_phone|default:"Not Provided" }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Mother's Details -->
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900 mb-3">Mother's Details</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <p class="text-sm text-gray-500 detail-label">Name</p>
+                                    <p class="text-lg font-medium text-gray-900 detail-value">{{ admission.mother_name|default:"Not Provided" }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500 detail-label">Occupation</p>
+                                    <p class="text-lg font-medium text-gray-900 detail-value">{{ admission.mother_occupation|default:"Not Provided" }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500 detail-label">Phone</p>
+                                    <p class="text-lg font-medium text-gray-900 detail-value">{{ admission.mother_phone|default:"Not Provided" }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Documents Section -->
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4 section-title">Submitted Documents</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {% if admission.student_photo %}
+                        <div>
+                            <p class="text-sm text-gray-500 mb-2">Student Photo</p>
+                            <img src="{{ admission.student_photo.url }}" alt="Student Photo" class="w-32 h-32 object-cover rounded-lg">
+                        </div>
+                        {% endif %}
+                        <div>
+                            <p class="text-sm text-gray-500 mb-2">Previous Marksheet</p>
+                            <a href="{{ admission.previous_marksheet.url }}" target="_blank" 
+                               class="text-indigo-600 hover:text-indigo-700 flex items-center">
+                                <i class="fas fa-file-alt mr-2"></i>
+                                View Document
+                            </a>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 mb-2">Transfer Certificate</p>
+                            <a href="{{ admission.transfer_certificate.url }}" target="_blank"
+                               class="text-indigo-600 hover:text-indigo-700 flex items-center">
+                                <i class="fas fa-file-alt mr-2"></i>
+                                View Document
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row justify-center gap-4 print-hide mt-8">
+                    <button onclick="window.print()" 
+                            class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 rounded-md shadow-sm text-base font-medium text-gray-700 bg-white hover:bg-gray-50">
+                        <i class="fas fa-print mr-2"></i>
+                        Print Application
+                    </button>
+                    <a href="{% url 'app:download_admission_pdf' admission.application_id %}" 
+                       class="inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">
+                        <i class="fas fa-download mr-2"></i>
+                        Download PDF
+                    </a>
+                    <a href="{% url 'app:home' %}" 
+                       class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 rounded-md shadow-sm text-base font-medium text-gray-700 bg-white hover:bg-gray-50">
+                        <i class="fas fa-home mr-2"></i>
+                        Back to Home
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Add this script for document download handling -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Save application ID to localStorage for future reference
+    localStorage.setItem('lastAdmissionId', '{{ admission.application_id }}');
+});
+</script>
 {% endblock %}
