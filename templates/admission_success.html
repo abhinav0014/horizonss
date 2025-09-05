@@ -5,62 +5,81 @@
 <style>
 @media print {
     /* Hide everything except the success card */
-    body * {
+    body .web {
         visibility: hidden;
     }
-    .success-card, .success-card * {
-        visibility: visible;
-    }
-    .success-card {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        background-color: white !important;
-        padding: 20px;
-    }
-    /* Hide the action buttons when printing */
-    .print-hide {
-        display: none !important;
-    }
-    /* Improve print layout */
-    .text-gray-900 {
-        color: black !important;
-    }
-    .text-gray-600, .text-gray-700, .text-gray-500 {
-        color: #4a5568 !important;
-    }
-    .shadow-sm {
-        box-shadow: none !important;
-    }
-    .bg-indigo-50 {
-        background-color: #f8fafc !important;
-    }
-    /* Add page break settings */
-    .success-card {
-        page-break-inside: avoid;
-    }
 
-    /* Additional print optimizations */
-    .detail-label {
-        color: #4a5568 !important;
-        font-weight: 600 !important;
+    body .print {
+        display: block !important;
     }
-    .detail-value {
-        color: #1a202c !important;
-    }
-    .section-title {
-        color: #2d3748 !important;
-        break-after: avoid !important;
-    }
-    .document-title {
-        font-size: 24px !important;
-        margin-bottom: 20px !important;
-    }
+    @page {
+            size: A4;
+            margin: 2.5cm 1.5cm;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #1a202c;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2em;
+        }
+        .logo {
+            max-width: 150px;
+            margin-bottom: 1em;
+        }
+        .document-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1a202c;
+            margin-bottom: 0.5em;
+        }
+        .section {
+            margin-bottom: 2em;
+            padding: 1em;
+            background-color: #f8fafc;
+            border-radius: 4px;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 1em;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1em;
+        }
+        .field {
+            margin-bottom: 0.8em;
+        }
+        .field-label {
+            font-size: 12px;
+            color: #4a5568;
+            margin-bottom: 0.2em;
+        }
+        .field-value {
+            font-size: 14px;
+            color: #1a202c;
+        }
+        .footer {
+            margin-top: 2em;
+            text-align: center;
+            font-size: 12px;
+            color: #4a5568;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #e2e8f0;
+            margin: 1em 0;
+        }
+    
 }
 </style>
 
-<div class="min-h-screen bg-gray-50 pt-20 pb-12">
+<div class="web min-h-screen bg-gray-50 pt-20 pb-12">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Success Card -->
         <div class="success-card bg-white rounded-lg shadow-sm p-8">
@@ -226,6 +245,110 @@
     </div>
 </div>
 
+
+<div class="print min-h-screen bg-white p-8" style="display: none;">
+    <div class="header">
+        <img src="{{ STATIC_URL }}img/logo.png" alt="School Logo" class="logo">
+        <h1 class="document-title">Admission Application</h1>
+        <p>Reference ID: {{ admission.application_id }}</p>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Personal Information</h2>
+        <div class="grid">
+            <div class="field">
+                <div class="field-label">Full Name</div>
+                <div class="field-value">{{ admission.full_name|default:"Not Provided" }}</div>
+            </div>
+            <div class="field">
+                <div class="field-label">Date of Birth</div>
+                <div class="field-value">{{ admission.date_of_birth|date:"F d, Y"|default:"Not Provided" }}</div>
+            </div>
+            <div class="field">
+                <div class="field-label">Gender</div>
+                <div class="field-value">{{ admission.get_gender_display|default:"Not Provided" }}</div>
+            </div>
+            <div class="field">
+                <div class="field-label">Email</div>
+                <div class="field-value">{{ admission.email|default:"Not Provided" }}</div>
+            </div>
+            <div class="field">
+                <div class="field-label">Phone</div>
+                <div class="field-value">{{ admission.phone|default:"Not Provided" }}</div>
+            </div>
+            <div class="field">
+                <div class="field-label">Address</div>
+                <div class="field-value">{{ admission.address|default:"Not Provided" }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Academic Information</h2>
+        <div class="grid">
+            <div class="field">
+                <div class="field-label">Applying for Grade</div>
+                <div class="field-value">{{ admission.applying_for_grade|default:"Not Provided" }}</div>
+            </div>
+            <div class="field">
+                <div class="field-label">Previous School</div>
+                <div class="field-value">{{ admission.previous_school|default:"Not Provided" }}</div>
+            </div>
+            <div class="field">
+                <div class="field-label">Previous Grade</div>
+                <div class="field-value">{{ admission.previous_grade|default:"Not Provided" }}</div>
+            </div>
+            <div class="field">
+                <div class="field-label">Previous Percentage</div>
+                <div class="field-value">{{ admission.previous_percentage|default:"Not Provided" }}%</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Parent Information</h2>
+        <div class="grid">
+            <!-- Father's Details -->
+            <div>
+                <h3 style="font-size: 16px; margin-bottom: 0.5em;">Father's Details</h3>
+                <div class="field">
+                    <div class="field-label">Name</div>
+                    <div class="field-value">{{ admission.father_name|default:"Not Provided" }}</div>
+                </div>
+                <div class="field">
+                    <div class="field-label">Occupation</div>
+                    <div class="field-value">{{ admission.father_occupation|default:"Not Provided" }}</div>
+                </div>
+                <div class="field">
+                    <div class="field-label">Phone</div>
+                    <div class="field-value">{{ admission.father_phone|default:"Not Provided" }}</div>
+                </div>
+            </div>
+            <!-- Mother's Details -->
+            <div>
+                <h3 style="font-size: 16px; margin-bottom: 0.5em;">Mother's Details</h3>
+                <div class="field">
+                    <div class="field-label">Name</div>
+                    <div class="field-value">{{ admission.mother_name|default:"Not Provided" }}</div>
+                </div>
+                <div class="field">
+                    <div class="field-label">Occupation</div>
+                    <div class="field-value">{{ admission.mother_occupation|default:"Not Provided" }}</div>
+                </div>
+                <div class="field">
+                    <div class="field-label">Phone</div>
+                    <div class="field-value">{{ admission.mother_phone|default:"Not Provided" }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <hr>
+        <p>This document was generated on {{ admission.created_at|date:"F d, Y" }}</p>
+        <p>New Horizon School - Admission Department</p>
+    </div>
+</div>
 <!-- Add this script for document download handling -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
